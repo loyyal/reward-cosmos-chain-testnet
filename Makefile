@@ -1,6 +1,12 @@
 BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 COMMIT := $(shell git log -1 --format='%H')
 APPNAME := rewardchain
+CMD_DIR := reward-chaind
+BINNAME := $(APPNAME)d
+GOBIN_DIR := $(shell go env GOBIN)
+ifeq (,$(GOBIN_DIR))
+  GOBIN_DIR := $(shell go env GOPATH)/bin
+endif
 
 # don't override user values
 ifeq (,$(VERSION))
@@ -54,10 +60,16 @@ all: install
 install:
 	@echo "--> ensure dependencies have not been modified"
 	@go mod verify
-	@echo "--> installing $(APPNAME)d"
-	@go install $(BUILD_FLAGS) -mod=readonly ./cmd/$(APPNAME)d
+	@echo "--> installing $(BINNAME) into $(GOBIN_DIR)"
+	@mkdir -p $(GOBIN_DIR)
+	@go build $(BUILD_FLAGS) -mod=readonly -o $(GOBIN_DIR)/$(BINNAME) ./cmd/$(CMD_DIR)
 
-.PHONY: all install
+install-noverify:
+	@echo "--> installing $(BINNAME) into $(GOBIN_DIR) (skipping go mod verify)"
+	@mkdir -p $(GOBIN_DIR)
+	@go build $(BUILD_FLAGS) -mod=readonly -o $(GOBIN_DIR)/$(BINNAME) ./cmd/$(CMD_DIR)
+
+.PHONY: all install install-noverify
 
 ##################
 ###  Protobuf  ###

@@ -35,6 +35,12 @@ rewardchaind version
 which rewardchaind
 ```
 
+If `rewardchaind` is installed but your shell can’t find it, add your Go bin dir to PATH (common default is `$(go env GOPATH)/bin`):
+
+```bash
+export PATH="$(go env GOPATH)/bin:$PATH"
+```
+
 ### Build a local binary into `./build/` (no install)
 
 ```bash
