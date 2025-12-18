@@ -104,6 +104,12 @@ VAL_ADDR="$(rewardchaind keys show validator -a --home "$HOME" --keyring-backend
 echo "$VAL_ADDR"
 ```
 
+You should see addresses starting with:
+
+- `reward1...` (account)
+- `rewardvaloper1...` (validator operator)
+- `rewardvalcons1...` (consensus)
+
 ### 4) Fund your account in genesis
 
 Add a genesis balance for the validator account.
@@ -266,5 +272,14 @@ rewardchaind start --minimum-gas-prices "0.0001stake"
 ### “wrong chain-id”
 
 Always pass `--chain-id` for tx/gentx steps. If you created genesis with one chain-id and later used another, re-init your home directory and regenerate genesis.
+
+### Bech32 prefix changes
+
+If you changed the Bech32 prefix (e.g. `cosmos1...` → `reward1...`), you **must regenerate**:
+
+- keys (or at least re-derive addresses under the new HRP)
+- genesis accounts / gentxs / genesis file
+
+Old Bech32 addresses won’t validate under the new prefix.
 
 

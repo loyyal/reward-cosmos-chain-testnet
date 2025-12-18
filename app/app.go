@@ -82,7 +82,7 @@ import (
 )
 
 const (
-	AccountAddressPrefix = "cosmos"
+	AccountAddressPrefix = "reward"
 	Name                 = "reward-chain"
 )
 
