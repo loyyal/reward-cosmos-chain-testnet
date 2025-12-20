@@ -2,16 +2,162 @@
 
 This document explains how to **build the `rewardchaind` binary** for this Cosmos SDK chain and how to **deploy/run a node** (single-node validator or local multi-validator testnet).
 
+## Modules Overview
+
+This chain includes the following modules:
+
+### Cosmos SDK Core Modules
+
+- **`auth`** - Account management, authentication, and transaction signing
+- **`bank`** - Token transfers and balance management
+- **`staking`** - Validator staking, delegation, and bonding
+- **`slashing`** - Validator slashing for downtime/double-signing
+- **`distribution`** - Fee distribution and staking rewards
+- **`mint`** - Token minting and inflation
+- **`gov`** - On-chain governance (proposals and voting)
+- **`params`** - Parameter management for modules
+- **`upgrade`** - Chain upgrades and migrations
+- **`crisis`** - Crisis invariant checks
+- **`evidence`** - Evidence handling for misbehavior
+- **`genutil`** - Genesis utilities and initialization
+- **`consensus`** - Consensus parameter management
+
+### Cosmos SDK Extended Modules
+
+- **`authz`** - Authorization for granting permissions to other accounts
+- **`feegrant`** - Fee grants (allowing one account to pay fees for another)
+- **`group`** - Group-based governance and multisig
+- **`nft`** - Non-fungible token (NFT) support
+- **`vesting`** - Token vesting accounts
+- **`circuit`** - Circuit breaker for emergency halts
+
+### IBC Modules (Inter-Blockchain Communication)
+
+- **`capability`** - Capability-based security for IBC
+- **`ibc`** (core) - IBC core protocol
+- **`transfer`** - IBC token transfers between chains
+- **`interchain-accounts`** (ICA) - Cross-chain account management
+- **`ibc-fee`** - Fee middleware for IBC transactions
+
+### Custom Modules
+
+- **`rewardchain`** - Partner management (create, disable, update partners with admin permissions)
+
+### Module Execution Order
+
+Modules execute in specific orders during block processing:
+
+- **PreBlockers**: `upgrade` (handles upgrades before other modules)
+- **BeginBlockers**: `mint`, `distribution`, `slashing`, `evidence`, `staking`, `authz`, `genutil`, `capability`, `ibc`, `transfer`, `ica`, `ibc-fee`, `rewardchain`
+- **EndBlockers**: `crisis`, `gov`, `staking`, `feegrant`, `group`, `genutil`, `ibc`, `transfer`, `capability`, `ica`, `ibc-fee`, `rewardchain`
+
 ## Prerequisites
 
 - **Go**: this repo targets **Go `1.24.x`** (see `go.mod`).
 - **GNU Make** (optional but recommended).
 - **git**
 
-For Linux servers you’ll also typically want:
+For Linux servers you'll also typically want:
 
 - `build-essential` (or equivalent) for compiling
 - `jq` (optional, helpful for config/genesis inspection)
+
+## Token Economics & Chain Configuration
+
+### Token Denomination
+
+**Default Bond Denom**: `stake`
+
+The chain uses `stake` as the default bond denomination (the token used for staking, delegation, and validator operations). This is the Cosmos SDK default and can be customized in your genesis configuration.
+
+**To customize the denom**, you'll need to:
+
+1. Set it in your genesis file's `staking` module params:
+```json
+{
+  "app_state": {
+    "staking": {
+      "params": {
+        "bond_denom": "your-token-denom"
+      }
+    }
+  }
+}
+```
+
+2. Update all references in genesis (balances, delegations, etc.) to use the new denom.
+
+**Note**: The examples in this guide use `stake` as the denomination. Replace with your actual denom when deploying.
+
+### Chain ID
+
+**Default Chain ID**: `rewardchain`
+
+The default chain ID is derived from the app name (`reward-chain`) with hyphens removed. For production deployments, you should **always explicitly set** a unique chain ID:
+
+```bash
+rewardchaind init "$MONIKER" --chain-id "rewardchain-1" --home "$HOME"
+```
+
+**Chain ID naming conventions**:
+- Use a descriptive name (e.g., `rewardchain-mainnet`, `rewardchain-testnet`)
+- Include network identifier (e.g., `rewardchain-1`, `rewardchain-2`)
+- Keep it consistent across all nodes in the network
+
+### Vesting Logic
+
+The chain includes the **`vesting`** module, which supports token vesting accounts. Vesting accounts lock tokens for a specified period, releasing them gradually or all at once at the end of the vesting period.
+
+**Supported vesting account types**:
+- **Base Vesting Account**: Basic vesting with start/end times
+- **Continuous Vesting Account**: Linear vesting over time
+- **Delayed Vesting Account**: All tokens vest at end time
+- **Periodic Vesting Account**: Multiple vesting periods
+
+**Creating vesting accounts in genesis**:
+
+You can create vesting accounts in your genesis file. The structure includes:
+
+```json
+{
+  "app_state": {
+    "auth": {
+      "accounts": [
+        {
+          "@type": "/cosmos.vesting.v1beta1.ContinuousVestingAccount",
+          "base_vesting_account": {
+            "base_account": {
+              "address": "reward1...",
+              "pub_key": null,
+              "account_number": "0",
+              "sequence": "0"
+            },
+            "original_vesting": [
+              {
+                "denom": "stake",
+                "amount": "1000000000"
+              }
+            ],
+            "delegated_free": [],
+            "delegated_vesting": [],
+            "end_time": "1735689600"
+          },
+          "start_time": "1704153600"
+        }
+      ]
+    }
+  }
+}
+```
+
+**Vesting parameters**:
+- `original_vesting`: Total tokens to be vested
+- `start_time`: Vesting start time (UNIX timestamp)
+- `end_time`: Vesting end time (UNIX timestamp)
+- `delegated_free`: Tokens that can be delegated immediately
+- `delegated_vesting`: Tokens that are vesting and delegated
+
+**Note**: Specific vesting schedules and parameters should be configured based on your tokenomics model. Please provide details on your vesting requirements for more specific guidance.
 
 ## Build the binary
 
