@@ -282,4 +282,174 @@ If you changed the Bech32 prefix (e.g. `cosmos1...` → `reward1...`), you **mus
 
 Old Bech32 addresses won’t validate under the new prefix.
 
+## Partner module usage
+
+This chain includes a `rewardchain` module that manages on-chain partners.
+
+### Admin addresses
+
+Only **admin wallets** can create, disable, or update partners. Admin addresses are stored in module parameters and can be set:
+
+#### 1) Set admin addresses in genesis (initial setup)
+
+Edit your genesis file (`$HOME/config/genesis.json`) and add admin addresses to the `rewardchain` module params:
+
+```json
+{
+  "app_state": {
+    "rewardchain": {
+      "params": {
+        "admin_addresses": [
+          "reward1abc...",
+          "reward1def..."
+        ]
+      },
+      "partner_list": []
+    }
+  }
+}
+```
+
+Then validate and start your chain:
+
+```bash
+rewardchaind genesis validate-genesis --home "$HOME"
+rewardchaind start --home "$HOME"
+```
+
+#### 2) Update admin addresses via governance
+
+Since `UpdateParams` is controlled by the governance module, you must submit a governance proposal to change admin addresses.
+
+**Step 1**: Create a proposal JSON file (`proposal-update-admin-addresses.json`):
+
+```json
+{
+  "messages": [
+    {
+      "@type": "/rewardchain.rewardchain.MsgUpdateParams",
+      "authority": "reward1...",  // governance module address (see note below)
+      "params": {
+        "admin_addresses": [
+          "reward1abc123...",
+          "reward1def456...",
+          "reward1ghi789..."
+        ]
+      }
+    }
+  ],
+  "metadata": "ipfs://CID",  // optional: IPFS hash of proposal metadata
+  "deposit": "1000000stake"   // minimum deposit required (check your chain's min deposit)
+}
+```
+
+**Note on authority**: The `authority` field should be the governance module account address. By default, this is derived from the `gov` module name. You can find it by:
+
+```bash
+# Query module accounts to find the gov module address
+rewardchaind query auth module-accounts
+
+# Or check your app configuration
+# The default is typically: reward1... (derived from module name "gov")
+```
+
+**Step 2**: Submit the proposal:
+
+```bash
+rewardchaind tx gov submit-proposal proposal-update-admin-addresses.json \
+  --from validator \
+  --keyring-backend os \
+  --chain-id "$CHAIN_ID" \
+  --home "$HOME"
+```
+
+This will output a proposal ID (e.g., `1`).
+
+**Step 3**: Vote on the proposal (if you have voting power):
+
+```bash
+PROPOSAL_ID=1  # Use the ID from step 2
+rewardchaind tx gov vote $PROPOSAL_ID yes \
+  --from validator \
+  --keyring-backend os \
+  --chain-id "$CHAIN_ID" \
+  --home "$HOME"
+```
+
+**Step 4**: Wait for the voting period to end. Once the proposal passes, the admin addresses will be updated automatically.
+
+**Query current params** (including admin addresses):
+
+```bash
+rewardchaind query rewardchain params
+```
+
+**Example output**:
+```json
+{
+  "params": {
+    "admin_addresses": [
+      "reward1abc123...",
+      "reward1def456..."
+    ]
+  }
+}
+```
+
+**Verify admin access**: Only addresses in the `admin_addresses` list can execute partner mutations. If a non-admin tries to create/disable/update a partner, they will receive an `unauthorized` error.
+
+### CLI (tx)
+
+Create a partner:
+
+```bash
+rewardchaind tx rewardchain create-partner "Acme Inc" "retail" "Mumbai" "IN" \
+  --from validator \
+  --keyring-backend os \
+  --chain-id "$CHAIN_ID" \
+  --home "$HOME"
+```
+
+Disable a partner:
+
+```bash
+rewardchaind tx rewardchain disable-partner 1 \
+  --from validator \
+  --keyring-backend os \
+  --chain-id "$CHAIN_ID" \
+  --home "$HOME"
+```
+
+Update a partner:
+
+```bash
+rewardchaind tx rewardchain update-partner 1 "Acme Inc" "retail" "Mumbai" "IN" \
+  --from validator \
+  --keyring-backend os \
+  --chain-id "$CHAIN_ID" \
+  --home "$HOME"
+```
+
+### CLI (query)
+
+List partners:
+
+```bash
+rewardchaind query rewardchain partners
+```
+
+Get partner by id:
+
+```bash
+rewardchaind query rewardchain partner 1
+```
+
+### HTTP API (gRPC-gateway)
+
+When the node’s API server is enabled, these endpoints are available:
+
+- `GET /reward-chain/rewardchain/partners`
+- `GET /reward-chain/rewardchain/partners/{id}`
+
+
 

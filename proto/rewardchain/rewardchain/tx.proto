@@ -6,6 +6,7 @@ import "cosmos/msg/v1/msg.proto";
 import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "rewardchain/rewardchain/params.proto";
+import "rewardchain/rewardchain/partner.proto";
 
 option go_package = "reward-chain/x/rewardchain/types";
 
@@ -16,6 +17,15 @@ service Msg {
   // UpdateParams defines a (governance) operation for updating the module
   // parameters. The authority defaults to the x/gov module account.
   rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+
+  // CreatePartner creates a new partner record.
+  rpc CreatePartner(MsgCreatePartner) returns (MsgCreatePartnerResponse);
+
+  // DisablePartner disables a partner (soft-delete).
+  rpc DisablePartner(MsgDisablePartner) returns (MsgDisablePartnerResponse);
+
+  // UpdatePartner updates partner fields.
+  rpc UpdatePartner(MsgUpdatePartner) returns (MsgUpdatePartnerResponse);
 }
 
 // MsgUpdateParams is the Msg/UpdateParams request type.
@@ -38,3 +48,51 @@ message MsgUpdateParams {
 // MsgUpdateParamsResponse defines the response structure for executing a
 // MsgUpdateParams message.
 message MsgUpdateParamsResponse {}
+
+// MsgCreatePartner defines the Msg/CreatePartner request type.
+message MsgCreatePartner {
+  option (cosmos.msg.v1.signer) = "creator";
+  option (amino.name) = "rewardchain/x/rewardchain/MsgCreatePartner";
+
+  // creator is the account creating this partner.
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  string name = 2;
+  string category = 3;
+  string location = 4;
+  string country = 5;
+}
+
+message MsgCreatePartnerResponse {
+  uint64 id = 1;
+}
+
+// MsgDisablePartner defines the Msg/DisablePartner request type.
+message MsgDisablePartner {
+  option (cosmos.msg.v1.signer) = "creator";
+  option (amino.name) = "rewardchain/x/rewardchain/MsgDisablePartner";
+
+  // creator is the account disabling this partner.
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  uint64 id = 2;
+}
+
+message MsgDisablePartnerResponse {}
+
+// MsgUpdatePartner defines the Msg/UpdatePartner request type.
+message MsgUpdatePartner {
+  option (cosmos.msg.v1.signer) = "creator";
+  option (amino.name) = "rewardchain/x/rewardchain/MsgUpdatePartner";
+
+  // creator is the admin account updating this partner.
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  uint64 id = 2;
+  string name = 3;
+  string category = 4;
+  string location = 5;
+  string country = 6;
+}
+
+message MsgUpdatePartnerResponse {}

@@ -1,0 +1,21 @@
+syntax = "proto3";
+package rewardchain.rewardchain;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "reward-chain/x/rewardchain/types";
+
+// Partner defines an on-chain partner record.
+message Partner {
+  option (amino.name) = "rewardchain/x/rewardchain/Partner";
+
+  uint64 id = 1;
+  string name = 2;
+  string category = 3;
+  string location = 4;
+  string country = 5;
+  bool disabled = 6;
+}
+
+

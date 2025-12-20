@@ -17,6 +17,9 @@ func (k Keeper) GetParams(ctx context.Context) (params types.Params) {
 	}
 
 	k.cdc.MustUnmarshal(bz, &params)
+	if params.AdminAddresses == nil {
+		params.AdminAddresses = []string{}
+	}
 	return params
 }
 

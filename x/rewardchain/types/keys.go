@@ -13,6 +13,9 @@ const (
 
 var (
 	ParamsKey = []byte("p_rewardchain")
+
+	PartnerCountKey = []byte("p_rewardchain_partner_count")
+	PartnerKeyPrefix = []byte("p_rewardchain_partner/")
 )
 
 func KeyPrefix(p string) []byte {

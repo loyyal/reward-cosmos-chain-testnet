@@ -17,6 +17,16 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Use:       "params",
 					Short:     "Shows the parameters of the module",
 				},
+				{
+					RpcMethod: "Partner",
+					Use:       "partner [id]",
+					Short:     "Shows a partner by id",
+				},
+				{
+					RpcMethod: "Partners",
+					Use:       "partners",
+					Short:     "Lists partners",
+				},
 				// this line is used by ignite scaffolding # autocli/query
 			},
 		},
@@ -27,6 +37,21 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				{
 					RpcMethod: "UpdateParams",
 					Skip:      true, // skipped because authority gated
+				},
+				{
+					RpcMethod: "CreatePartner",
+					Use:       "create-partner [name] [category] [location] [country]",
+					Short:     "Create a partner",
+				},
+				{
+					RpcMethod: "DisablePartner",
+					Use:       "disable-partner [id]",
+					Short:     "Disable a partner by id",
+				},
+				{
+					RpcMethod: "UpdatePartner",
+					Use:       "update-partner [id] [name] [category] [location] [country]",
+					Short:     "Update a partner",
 				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},

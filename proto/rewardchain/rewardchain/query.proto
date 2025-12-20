@@ -6,6 +6,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "rewardchain/rewardchain/params.proto";
+import "rewardchain/rewardchain/partner.proto";
 
 option go_package = "reward-chain/x/rewardchain/types";
 
@@ -14,6 +15,16 @@ service Query {
   // Parameters queries the parameters of the module.
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/reward-chain/rewardchain/params";
+  }
+
+  // Partner queries a single partner by id.
+  rpc Partner(QueryPartnerRequest) returns (QueryPartnerResponse) {
+    option (google.api.http).get = "/reward-chain/rewardchain/partners/{id}";
+  }
+
+  // Partners lists partners.
+  rpc Partners(QueryPartnersRequest) returns (QueryPartnersResponse) {
+    option (google.api.http).get = "/reward-chain/rewardchain/partners";
   }
 }
 
@@ -27,4 +38,24 @@ message QueryParamsResponse {
     (gogoproto.nullable) = false,
     (amino.dont_omitempty) = true
   ];
+}
+
+message QueryPartnerRequest {
+  uint64 id = 1;
+}
+
+message QueryPartnerResponse {
+  Partner partner = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryPartnersRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+
+  // include_disabled controls whether disabled partners are returned.
+  bool include_disabled = 2;
+}
+
+message QueryPartnersResponse {
+  repeated Partner partners = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }

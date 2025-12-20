@@ -2,6 +2,7 @@ syntax = "proto3";
 package rewardchain.rewardchain;
 
 import "amino/amino.proto";
+import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 
 option go_package = "reward-chain/x/rewardchain/types";
@@ -11,5 +12,6 @@ message Params {
   option (amino.name) = "rewardchain/x/rewardchain/Params";
   option (gogoproto.equal) = true;
 
-  
+  // admin_addresses is the allowlist of accounts permitted to create/disable/update partners.
+  repeated string admin_addresses = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
 }

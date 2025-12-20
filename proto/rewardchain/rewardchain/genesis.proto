@@ -4,6 +4,7 @@ package rewardchain.rewardchain;
 import "amino/amino.proto";
 import "gogoproto/gogo.proto";
 import "rewardchain/rewardchain/params.proto";
+import "rewardchain/rewardchain/partner.proto";
 
 option go_package = "reward-chain/x/rewardchain/types";
 
@@ -13,5 +14,10 @@ message GenesisState {
   Params params = 1 [
     (gogoproto.nullable) = false,
     (amino.dont_omitempty) = true
+  ];
+
+  // partners is the initial list of partners to load at genesis.
+  repeated Partner partners = 2 [
+    (gogoproto.nullable) = false
   ];
 }
