@@ -63,11 +63,33 @@ install:
 	@echo "--> installing $(BINNAME) into $(GOBIN_DIR)"
 	@mkdir -p $(GOBIN_DIR)
 	@go build $(BUILD_FLAGS) -mod=readonly -o $(GOBIN_DIR)/$(BINNAME) ./cmd/$(CMD_DIR)
+	@echo "--> verifying installation"
+	@$(GOBIN_DIR)/$(BINNAME) version
+	@echo "--> adding $(GOBIN_DIR) to PATH in ~/.bashrc (if not already present)"
+	@if ! grep -q "$(GOBIN_DIR)" ~/.bashrc 2>/dev/null; then \
+		echo 'export PATH="$$PATH:$(GOBIN_DIR)"' >> ~/.bashrc; \
+		echo "--> PATH added to ~/.bashrc"; \
+	else \
+		echo "--> PATH already configured in ~/.bashrc"; \
+	fi
+	@echo "--> installation complete. Run 'source ~/.bashrc' or start a new shell to use $(BINNAME) command"
+	@echo "--> To use $(BINNAME) in current session, run: export PATH=\"$$PATH:$(GOBIN_DIR)\""
 
 install-noverify:
 	@echo "--> installing $(BINNAME) into $(GOBIN_DIR) (skipping go mod verify)"
 	@mkdir -p $(GOBIN_DIR)
 	@go build $(BUILD_FLAGS) -mod=readonly -o $(GOBIN_DIR)/$(BINNAME) ./cmd/$(CMD_DIR)
+	@echo "--> verifying installation"
+	@$(GOBIN_DIR)/$(BINNAME) version
+	@echo "--> adding $(GOBIN_DIR) to PATH in ~/.bashrc (if not already present)"
+	@if ! grep -q "$(GOBIN_DIR)" ~/.bashrc 2>/dev/null; then \
+		echo 'export PATH="$$PATH:$(GOBIN_DIR)"' >> ~/.bashrc; \
+		echo "--> PATH added to ~/.bashrc"; \
+	else \
+		echo "--> PATH already configured in ~/.bashrc"; \
+	fi
+	@echo "--> installation complete. Run 'source ~/.bashrc' or start a new shell to use $(BINNAME) command"
+	@echo "--> To use $(BINNAME) in current session, run: export PATH=\"$$PATH:$(GOBIN_DIR)\""
 
 .PHONY: all install install-noverify
 
