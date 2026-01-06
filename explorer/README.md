@@ -160,6 +160,18 @@ The Ping.pub explorer provides:
 
 ## Troubleshooting
 
+### Transactions Not Showing
+
+If ping.pub explorer is working but transactions are not appearing, see the detailed troubleshooting guide:
+
+**[TROUBLESHOOTING_TXS.md](./TROUBLESHOOTING_TXS.md)** - Complete guide for fixing transaction visibility issues.
+
+Common quick fixes:
+1. Enable API server: `enable = true` in `app.toml`
+2. Enable CORS: `enabled-unsafe-cors = true` in `app.toml` and `cors_allowed_origins = ["*"]` in `config.toml`
+3. Enable transaction indexing: `indexer = "kv"` in `config.toml`
+4. **Restart your node** after making changes
+
 ### Port Already in Use
 
 If port 5173 is already in use:
