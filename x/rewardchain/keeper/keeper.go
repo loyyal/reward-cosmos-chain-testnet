@@ -8,7 +8,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"reward-chain/x/rewardchain/types"
+	"rewardchain/x/rewardchain/types"
 )
 
 type (

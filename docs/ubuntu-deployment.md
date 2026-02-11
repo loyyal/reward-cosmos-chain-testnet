@@ -11,8 +11,9 @@ This guide provides step-by-step instructions for deploying the `rewardchaind` b
 5. [Configuration](#configuration)
 6. [Systemd Service Setup](#systemd-service-setup)
 7. [Firewall Configuration](#firewall-configuration)
-8. [Monitoring and Maintenance](#monitoring-and-maintenance)
-9. [Troubleshooting](#troubleshooting)
+8. [Block Explorer Setup](#block-explorer-setup)
+9. [Monitoring and Maintenance](#monitoring-and-maintenance)
+10. [Troubleshooting](#troubleshooting)
 
 ## Prerequisites
 
@@ -38,8 +39,8 @@ sudo apt-get install -y build-essential git curl wget jq
 
 # Install Go (if building on server)
 # Download Go 1.24.x (check https://go.dev/dl/ for latest version)
-wget https://go.dev/dl/go1.24.linux-amd64.tar.gz
-sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.24.linux-amd64.tar.gz
+wget https://go.dev/dl/go1.24.0.linux-amd64.tar.gz
+sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.24.0.linux-amd64.tar.gz
 
 # Add Go to PATH
 echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
@@ -53,22 +54,9 @@ go version
 
 ## Server Setup
 
-### 1. Create a Dedicated User
+### 1. Set Up Directory Structure
 
-For security best practices, create a dedicated user for running the node:
-
-```bash
-# Create user
-sudo useradd -m -s /bin/bash rewardchain
-
-# Add user to sudo group (optional, for administrative tasks)
-sudo usermod -aG sudo rewardchain
-
-# Switch to the new user
-sudo su - rewardchain
-```
-
-### 2. Set Up Directory Structure
+This guide assumes you're running as the `ubuntu` user. If you prefer to use a dedicated user, you can create one, but all commands below will work with the `ubuntu` user.
 
 ```bash
 # Create directories
@@ -90,8 +78,8 @@ If you have Go installed on the server:
 ```bash
 # Clone the repository
 cd ~
-git clone https://github.com/your-username/reward-chain.git
-cd reward-chain
+git clone https://github.com/your-username/rewardchain.git
+cd rewardchain
 
 # Build the binary
 make install
@@ -110,12 +98,12 @@ Build the binary on your local machine:
 
 ```bash
 # On your local machine
-cd /path/to/reward-chain
+cd /path/to/rewardchain
 make install
 
 # Build a release binary
 mkdir -p build
-go build -o ./build/rewardchaind ./cmd/reward-chaind
+go build -o ./build/rewardchaind ./cmd/rewardchaind
 
 # Verify
 ./build/rewardchaind version
@@ -125,9 +113,9 @@ Transfer to the server:
 
 ```bash
 # From your local machine
-scp ./build/rewardchaind user@your-server-ip:/tmp/rewardchaind
+scp ./build/rewardchaind ubuntu@your-server-ip:/tmp/rewardchaind
 
-# On the server
+# On the server (as ubuntu user)
 sudo mv /tmp/rewardchaind /usr/local/bin/rewardchaind
 sudo chmod +x /usr/local/bin/rewardchaind
 sudo chown root:root /usr/local/bin/rewardchaind
@@ -312,11 +300,11 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-User=rewardchain
-Group=rewardchain
-WorkingDirectory=/home/rewardchain
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu
 ExecStart=/usr/local/bin/rewardchaind start \
-  --home /home/rewardchain/.rewardchain \
+  --home /home/ubuntu/.rewardchain \
   --minimum-gas-prices 0.0001stake
 Restart=always
 RestartSec=3
@@ -326,8 +314,9 @@ LimitNOFILE=65535
 NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=full
-ProtectHome=true
-ReadWritePaths=/home/rewardchain/.rewardchain
+# Remove or comment out ProtectHome=true if it causes issues
+# ProtectHome=true
+ReadWritePaths=/home/ubuntu/.rewardchain
 
 # Logging
 StandardOutput=journal
@@ -417,19 +406,304 @@ sudo ufw allow from YOUR_TRUSTED_IP to any port 26657
 sudo ufw deny 26657/tcp
 ```
 
+## Block Explorer Setup
+
+This section covers setting up a [Ping.pub](https://ping.pub) block explorer for your Reward Chain node. The explorer provides a web interface to browse blocks, transactions, validators, and accounts.
+
+### Prerequisites
+
+Before setting up the explorer, ensure you have:
+
+1. **Node.js** (v18 or later) - Install from [nodejs.org](https://nodejs.org/)
+2. **Yarn** or **npm** - Package manager (Yarn is preferred)
+3. **Git** - Should already be installed from prerequisites
+4. **Running Reward Chain node** - Your node must be running with:
+   - RPC endpoint accessible: `http://localhost:26657` (or your server IP)
+   - REST API endpoint accessible: `http://localhost:1317` (or your server IP)
+
+### Install Node.js and Yarn
+
+If not already installed:
+
+```bash
+# Install Node.js (using NodeSource repository for latest LTS)
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Verify Node.js installation
+node --version
+npm --version
+
+# Install Yarn (recommended)
+npm install -g yarn
+
+# Verify Yarn installation
+yarn --version
+```
+
+### Configure CORS for Explorer Access
+
+Before setting up the explorer, you need to enable CORS in your node configuration to allow the explorer to connect:
+
+**1. Enable CORS in `config.toml`:**
+
+```bash
+nano /home/ubuntu/.rewardchain/config/config.toml
+```
+
+Add or update the `[rpc]` section:
+
+```toml
+[rpc]
+cors_allowed_origins = ["*"]
+```
+
+**2. Enable CORS in `app.toml`:**
+
+```bash
+nano /home/ubuntu/.rewardchain/config/app.toml
+```
+
+Ensure the `[api]` section has:
+
+```toml
+[api]
+enable = true
+enabled-unsafe-cors = true
+```
+
+**3. Restart your node:**
+
+```bash
+sudo systemctl restart rewardchaind
+```
+
+### Automatic Setup (Recommended)
+
+The easiest way to set up the explorer is using the provided setup script:
+
+```bash
+# Navigate to the explorer directory
+# Replace ~/rewardchain with your actual repository path
+cd ~/rewardchain/explorer
+
+# Make the script executable
+chmod +x setup.sh
+
+# Run the setup script
+./setup.sh setup
+```
+
+This script will:
+1. Check for required dependencies (Node.js, Yarn/npm, Git)
+2. Clone the Ping.pub explorer repository to `~/ping-pub-explorer`
+3. Configure it for Reward Chain
+4. Install dependencies
+5. Start the development server
+
+The explorer will be available at: **http://localhost:5173/rewardchain**
+
+### Manual Setup
+
+If you prefer to set up manually or the automatic script fails:
+
+```bash
+# 1. Clone the Ping.pub explorer
+git clone https://github.com/ping-pub/explorer.git ~/ping-pub-explorer
+cd ~/ping-pub-explorer
+
+# 2. Install dependencies
+yarn install
+# Or if using npm (may require --legacy-peer-deps flag):
+# npm install --legacy-peer-deps
+
+# 3. Create chain configuration directory
+mkdir -p chains/mainnet
+
+# 4. Copy the Reward Chain configuration
+# Replace ~/rewardchain with your actual repository path
+cp ~/rewardchain/explorer/ping_pub_config.json chains/mainnet/rewardchain.json
+
+# Rebuild with new config
+yarn build    # or: npm run build
+
+# Restart via PM2
+pm2 start "serve -s dist -l 5173" --name reward-explorer
+pm2 save
+```
+
+### Update Configuration for Remote Access
+
+If you want to access the explorer from a remote machine, update the endpoints in the configuration file:
+
+```bash
+nano ~/ping-pub-explorer/chains/mainnet/rewardchain.json
+```
+
+Update the `api` and `rpc` addresses to use your server's IP:
+
+```json
+{
+  "api": [
+    {
+      "address": "http://YOUR_SERVER_IP:1317",
+      "provider": "local"
+    }
+  ],
+  "rpc": [
+    {
+      "address": "http://YOUR_SERVER_IP:26657",
+      "provider": "local"
+    }
+  ]
+}
+```
+
+### Running Explorer as a Service (Optional)
+
+For production, you may want to run the explorer as a systemd service:
+
+```bash
+sudo nano /etc/systemd/system/ping-pub-explorer.service
+```
+
+Add the following configuration:
+
+```ini
+[Unit]
+Description=Ping.pub Block Explorer
+After=network-online.target rewardchaind.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/ping-pub-explorer
+ExecStart=/usr/bin/yarn dev
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=ping-pub-explorer
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Enable and start the service:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable ping-pub-explorer
+sudo systemctl start ping-pub-explorer
+sudo systemctl status ping-pub-explorer
+```
+
+### Firewall Configuration for Explorer
+
+If you want to access the explorer from remote machines, allow the explorer port:
+
+```bash
+# Allow explorer port (5173)
+sudo ufw allow 5173/tcp
+
+# Check status
+sudo ufw status
+```
+
+### Accessing the Explorer
+
+Once running, open your browser and navigate to:
+
+- **Local access**: http://localhost:5173/rewardchain
+- **Remote access**: http://YOUR_SERVER_IP:5173/rewardchain
+
+### Explorer Features
+
+The Ping.pub explorer provides:
+
+- **Blocks**: Browse recent blocks and block details
+- **Transactions**: View transaction history and details
+- **Validators**: See validator information and staking details
+- **Accounts**: Check account balances and transaction history
+- **Proposals**: View governance proposals (if applicable)
+- **IBC**: Monitor IBC transfers and channels
+
+### Troubleshooting Explorer Issues
+
+**Transactions Not Showing:**
+
+1. Verify API server is enabled: `enable = true` in `app.toml`
+2. Verify CORS is enabled in both `config.toml` and `app.toml`
+3. Check transaction indexing: `indexer = "kv"` in `config.toml`
+4. **Restart your node** after making changes
+
+**Port Already in Use:**
+
+```bash
+# Find what's using port 5173
+sudo lsof -i :5173
+
+# Kill the process or change the port
+```
+
+**Dependency Resolution Errors:**
+
+If using npm and encountering dependency errors:
+
+```bash
+cd ~/ping-pub-explorer
+npm install --legacy-peer-deps
+```
+
+**CORS Errors:**
+
+1. Verify CORS is enabled in both configuration files
+2. Restart your node after making changes
+3. Check that the API server is enabled
+
+**Node Not Responding:**
+
+```bash
+# Verify your node is running
+curl http://localhost:26657/status
+curl http://localhost:1317/cosmos/base/tendermint/v1beta1/node_info
+```
+
+For more detailed troubleshooting, see the [Explorer Troubleshooting Guide](../explorer/TROUBLESHOOTING_TXS.md).
+
+### Production Deployment
+
+For production deployments:
+
+1. **Build for production**:
+   ```bash
+   cd ~/ping-pub-explorer
+   yarn build
+   ```
+
+2. **Use a production web server** (nginx, Apache) to serve the built files
+
+3. **Update endpoints** in configuration to use production RPC/API URLs
+
+4. **Configure HTTPS** for secure access
+
+5. **Set up proper CORS** origins instead of `["*"]` for security
+
 ## Monitoring and Maintenance
 
 ### 1. Check Node Status
 
 ```bash
 # Check if node is syncing
-rewardchaind status --home /home/rewardchain/.rewardchain
+rewardchaind status --home /home/ubuntu/.rewardchain
 
 # Check validator status
-rewardchaind query staking validators --home /home/rewardchain/.rewardchain
+rewardchaind query staking validators --home /home/ubuntu/.rewardchain
 
 # Check your validator
-rewardchaind query staking validator $(rewardchaind keys show validator -a --bech val --home /home/rewardchain/.rewardchain --keyring-backend file) --home /home/rewardchain/.rewardchain
+rewardchaind query staking validator $(rewardchaind keys show validator -a --bech val --home /home/ubuntu/.rewardchain --keyring-backend file) --home /home/ubuntu/.rewardchain
 ```
 
 ### 2. Monitor Logs
@@ -452,10 +726,10 @@ sudo journalctl -u rewardchaind | grep -i "synced\|catching\|height"
 df -h
 
 # Check data directory size
-du -sh /home/rewardchain/.rewardchain/data
+du -sh /home/ubuntu/.rewardchain/data
 
 # Monitor disk usage over time
-watch -n 60 'df -h /home/rewardchain/.rewardchain'
+watch -n 60 'df -h /home/ubuntu/.rewardchain'
 ```
 
 ### 4. Set Up Log Rotation
@@ -476,7 +750,7 @@ Add:
     delaycompress
     missingok
     notifempty
-    create 0640 rewardchain rewardchain
+    create 0640 ubuntu ubuntu
 }
 ```
 
@@ -490,11 +764,11 @@ mkdir -p ~/backups/rewardchain
 
 # Backup keys (CRITICAL - store securely off-server)
 tar -czf ~/backups/rewardchain/keys-$(date +%Y%m%d).tar.gz \
-  /home/rewardchain/.rewardchain/keyring-file/
+  /home/ubuntu/.rewardchain/keyring-file/
 
 # Backup configuration
 tar -czf ~/backups/rewardchain/config-$(date +%Y%m%d).tar.gz \
-  /home/rewardchain/.rewardchain/config/
+  /home/ubuntu/.rewardchain/config/
 
 # Schedule automatic backups (add to crontab)
 crontab -e
@@ -517,7 +791,7 @@ sudo journalctl -u rewardchaind -n 50
 sudo netstat -tulpn | grep 26656
 
 # 2. Insufficient permissions
-ls -la /home/rewardchain/.rewardchain
+ls -la /home/ubuntu/.rewardchain
 
 # 3. Disk space full
 df -h
@@ -527,13 +801,13 @@ df -h
 
 ```bash
 # Check current block height
-rewardchaind status --home /home/rewardchain/.rewardchain | jq .SyncInfo
+rewardchaind status --home /home/ubuntu/.rewardchain | jq .SyncInfo
 
 # Check if connected to peers
-rewardchaind status --home /home/rewardchain/.rewardchain | jq .NodeInfo
+rewardchaind status --home /home/ubuntu/.rewardchain | jq .NodeInfo
 
 # Verify seed/peer configuration
-cat /home/rewardchain/.rewardchain/config/config.toml | grep -A 5 "seeds\|persistent_peers"
+cat /home/ubuntu/.rewardchain/config/config.toml | grep -A 5 "seeds\|persistent_peers"
 
 # Check firewall
 sudo ufw status
@@ -549,7 +823,7 @@ telnet YOUR_SERVER_IP 26656
 sudo netstat -tulpn | grep rewardchaind
 
 # Verify external address in config.toml
-cat /home/rewardchain/.rewardchain/config/config.toml | grep external_address
+cat /home/ubuntu/.rewardchain/config/config.toml | grep external_address
 ```
 
 ### High Memory Usage
@@ -569,15 +843,15 @@ ps aux | grep rewardchaind
 
 ```bash
 # Check validator status
-rewardchaind query staking validator $(rewardchaind keys show validator -a --bech val --home /home/rewardchain/.rewardchain --keyring-backend file) --home /home/rewardchain/.rewardchain
+rewardchaind query staking validator $(rewardchaind keys show validator -a --bech val --home /home/ubuntu/.rewardchain --keyring-backend file) --home /home/ubuntu/.rewardchain
 
 # If jailed, check why
-rewardchaind query slashing signing-info $(rewardchaind tendermint show-validator --home /home/rewardchain/.rewardchain) --home /home/rewardchain/.rewardchain
+rewardchaind query slashing signing-info $(rewardchaind tendermint show-validator --home /home/ubuntu/.rewardchain) --home /home/ubuntu/.rewardchain
 
 # Unjail (if appropriate)
 rewardchaind tx slashing unjail \
   --from validator \
-  --home /home/rewardchain/.rewardchain \
+  --home /home/ubuntu/.rewardchain \
   --keyring-backend file \
   --chain-id "$CHAIN_ID"
 ```
@@ -595,7 +869,7 @@ sudo systemctl status rewardchaind
 ls -la /usr/local/bin/rewardchaind
 
 # Check file permissions
-ls -la /home/rewardchain/.rewardchain/
+ls -la /home/ubuntu/.rewardchain/
 ```
 
 ## Security Best Practices

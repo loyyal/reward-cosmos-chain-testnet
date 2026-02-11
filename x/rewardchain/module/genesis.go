@@ -3,8 +3,8 @@ package rewardchain
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"reward-chain/x/rewardchain/keeper"
-	"reward-chain/x/rewardchain/types"
+	"rewardchain/x/rewardchain/keeper"
+	"rewardchain/x/rewardchain/types"
 )
 
 // InitGenesis initializes the module's state from a provided genesis state.

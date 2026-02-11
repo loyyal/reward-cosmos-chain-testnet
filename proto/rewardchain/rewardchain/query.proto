@@ -8,23 +8,23 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "rewardchain/rewardchain/params.proto";
 import "rewardchain/rewardchain/partner.proto";
 
-option go_package = "reward-chain/x/rewardchain/types";
+option go_package = "rewardchain/x/rewardchain/types";
 
 // Query defines the gRPC querier service.
 service Query {
   // Parameters queries the parameters of the module.
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
-    option (google.api.http).get = "/reward-chain/rewardchain/params";
+    option (google.api.http).get = "/rewardchain/rewardchain/params";
   }
 
   // Partner queries a single partner by id.
   rpc Partner(QueryPartnerRequest) returns (QueryPartnerResponse) {
-    option (google.api.http).get = "/reward-chain/rewardchain/partners/{id}";
+    option (google.api.http).get = "/rewardchain/rewardchain/partners/{id}";
   }
 
   // Partners lists partners.
   rpc Partners(QueryPartnersRequest) returns (QueryPartnersResponse) {
-    option (google.api.http).get = "/reward-chain/rewardchain/partners";
+    option (google.api.http).get = "/rewardchain/rewardchain/partners";
   }
 }
 

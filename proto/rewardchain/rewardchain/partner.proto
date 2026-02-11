@@ -4,7 +4,7 @@ package rewardchain.rewardchain;
 import "amino/amino.proto";
 import "gogoproto/gogo.proto";
 
-option go_package = "reward-chain/x/rewardchain/types";
+option go_package = "rewardchain/x/rewardchain/types";
 
 // Partner defines an on-chain partner record.
 message Partner {
@@ -16,6 +16,13 @@ message Partner {
   string location = 4;
   string country = 5;
   bool disabled = 6;
+  string total_liquidity = 7;
+  string available_liquidity = 8;
+  string on_hold_liquidity = 9;
+  string earn_cost_per_point = 10;
+  string redeem_cost_per_point = 11;
+  string starts_from = 12;
+  string ends_before = 13;
 }
 
 

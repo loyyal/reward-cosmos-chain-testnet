@@ -6,9 +6,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	keepertest "reward-chain/testutil/keeper"
-	"reward-chain/x/rewardchain/keeper"
-	"reward-chain/x/rewardchain/types"
+	keepertest "rewardchain/testutil/keeper"
+	"rewardchain/x/rewardchain/keeper"
+	"rewardchain/x/rewardchain/types"
 )
 
 func setupMsgServer(t testing.TB) (keeper.Keeper, types.MsgServer, context.Context) {

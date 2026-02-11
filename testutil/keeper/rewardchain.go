@@ -17,8 +17,8 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	"github.com/stretchr/testify/require"
 
-	"reward-chain/x/rewardchain/keeper"
-	"reward-chain/x/rewardchain/types"
+	"rewardchain/x/rewardchain/keeper"
+	"rewardchain/x/rewardchain/types"
 )
 
 func RewardchainKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {

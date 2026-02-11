@@ -6,7 +6,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 
-	"reward-chain/x/rewardchain/types"
+	"rewardchain/x/rewardchain/types"
 )
 
 func TestMsgUpdateParams(t *testing.T) {

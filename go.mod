@@ -1,4 +1,4 @@
-module reward-chain
+module rewardchain
 
 go 1.24.0
 

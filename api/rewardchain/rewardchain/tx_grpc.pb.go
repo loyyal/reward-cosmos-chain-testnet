@@ -19,10 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Msg_UpdateParams_FullMethodName   = "/rewardchain.rewardchain.Msg/UpdateParams"
-	Msg_CreatePartner_FullMethodName  = "/rewardchain.rewardchain.Msg/CreatePartner"
-	Msg_DisablePartner_FullMethodName = "/rewardchain.rewardchain.Msg/DisablePartner"
-	Msg_UpdatePartner_FullMethodName  = "/rewardchain.rewardchain.Msg/UpdatePartner"
+	Msg_UpdateParams_FullMethodName  = "/rewardchain.rewardchain.Msg/UpdateParams"
+	Msg_CreatePartner_FullMethodName = "/rewardchain.rewardchain.Msg/CreatePartner"
 )
 
 // MsgClient is the client API for Msg service.
@@ -32,12 +30,7 @@ type MsgClient interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
-	// CreatePartner creates a new partner record.
 	CreatePartner(ctx context.Context, in *MsgCreatePartner, opts ...grpc.CallOption) (*MsgCreatePartnerResponse, error)
-	// DisablePartner disables a partner (soft-delete).
-	DisablePartner(ctx context.Context, in *MsgDisablePartner, opts ...grpc.CallOption) (*MsgDisablePartnerResponse, error)
-	// UpdatePartner updates partner fields.
-	UpdatePartner(ctx context.Context, in *MsgUpdatePartner, opts ...grpc.CallOption) (*MsgUpdatePartnerResponse, error)
 }
 
 type msgClient struct {
@@ -66,24 +59,6 @@ func (c *msgClient) CreatePartner(ctx context.Context, in *MsgCreatePartner, opt
 	return out, nil
 }
 
-func (c *msgClient) DisablePartner(ctx context.Context, in *MsgDisablePartner, opts ...grpc.CallOption) (*MsgDisablePartnerResponse, error) {
-	out := new(MsgDisablePartnerResponse)
-	err := c.cc.Invoke(ctx, Msg_DisablePartner_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) UpdatePartner(ctx context.Context, in *MsgUpdatePartner, opts ...grpc.CallOption) (*MsgUpdatePartnerResponse, error) {
-	out := new(MsgUpdatePartnerResponse)
-	err := c.cc.Invoke(ctx, Msg_UpdatePartner_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -91,12 +66,7 @@ type MsgServer interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
-	// CreatePartner creates a new partner record.
 	CreatePartner(context.Context, *MsgCreatePartner) (*MsgCreatePartnerResponse, error)
-	// DisablePartner disables a partner (soft-delete).
-	DisablePartner(context.Context, *MsgDisablePartner) (*MsgDisablePartnerResponse, error)
-	// UpdatePartner updates partner fields.
-	UpdatePartner(context.Context, *MsgUpdatePartner) (*MsgUpdatePartnerResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -109,12 +79,6 @@ func (UnimplementedMsgServer) UpdateParams(context.Context, *MsgUpdateParams) (*
 }
 func (UnimplementedMsgServer) CreatePartner(context.Context, *MsgCreatePartner) (*MsgCreatePartnerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePartner not implemented")
-}
-func (UnimplementedMsgServer) DisablePartner(context.Context, *MsgDisablePartner) (*MsgDisablePartnerResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DisablePartner not implemented")
-}
-func (UnimplementedMsgServer) UpdatePartner(context.Context, *MsgUpdatePartner) (*MsgUpdatePartnerResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdatePartner not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -165,42 +129,6 @@ func _Msg_CreatePartner_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_DisablePartner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgDisablePartner)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).DisablePartner(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Msg_DisablePartner_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).DisablePartner(ctx, req.(*MsgDisablePartner))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_UpdatePartner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdatePartner)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).UpdatePartner(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Msg_UpdatePartner_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdatePartner(ctx, req.(*MsgUpdatePartner))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -215,14 +143,6 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreatePartner",
 			Handler:    _Msg_CreatePartner_Handler,
-		},
-		{
-			MethodName: "DisablePartner",
-			Handler:    _Msg_DisablePartner_Handler,
-		},
-		{
-			MethodName: "UpdatePartner",
-			Handler:    _Msg_UpdatePartner_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

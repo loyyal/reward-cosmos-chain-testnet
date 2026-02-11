@@ -75,15 +75,15 @@ import (
 	ibctransferkeeper "github.com/cosmos/ibc-go/v8/modules/apps/transfer/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 
-	rewardchainmodulekeeper "reward-chain/x/rewardchain/keeper"
+	rewardchainmodulekeeper "rewardchain/x/rewardchain/keeper"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
-	"reward-chain/docs"
+	"rewardchain/docs"
 )
 
 const (
 	AccountAddressPrefix = "reward"
-	Name                 = "reward-chain"
+	Name                 = "rewardchain"
 )
 
 var (

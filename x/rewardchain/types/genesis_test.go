@@ -3,7 +3,7 @@ package types_test
 import (
 	"testing"
 
-	"reward-chain/x/rewardchain/types"
+	"rewardchain/x/rewardchain/types"
 
 	"github.com/stretchr/testify/require"
 )

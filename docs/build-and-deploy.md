@@ -93,7 +93,7 @@ The chain uses `stake` as the default bond denomination (the token used for stak
 
 **Default Chain ID**: `rewardchain`
 
-The default chain ID is derived from the app name (`reward-chain`) with hyphens removed. For production deployments, you should **always explicitly set** a unique chain ID:
+The default chain ID is derived from the app name (`rewardchain`) with hyphens removed. For production deployments, you should **always explicitly set** a unique chain ID:
 
 ```bash
 rewardchaind init "$MONIKER" --chain-id "rewardchain-1" --home "$HOME"
@@ -166,11 +166,11 @@ You can create vesting accounts in your genesis file. The structure includes:
 From the repo root:
 
 ```bash
-cd /path/to/reward-chain
+cd /path/to/rewardchain
 make install
 ```
 
-This runs `go install ... ./cmd/reward-chaind` with version/commit ldflags and installs the binary as:
+This runs `go install ... ./cmd/rewardchaind` with version/commit ldflags and installs the binary as:
 
 - `rewardchaind`
 
@@ -190,9 +190,9 @@ export PATH="$(go env GOPATH)/bin:$PATH"
 ### Build a local binary into `./build/` (no install)
 
 ```bash
-cd /path/to/reward-chain
+cd /path/to/rewardchain
 mkdir -p build
-go build -o ./build/rewardchaind ./cmd/reward-chaind
+go build -o ./build/rewardchaind ./cmd/rewardchaind
 ./build/rewardchaind version
 ```
 
@@ -594,8 +594,8 @@ rewardchaind query rewardchain partner 1
 
 When the node’s API server is enabled, these endpoints are available:
 
-- `GET /reward-chain/rewardchain/partners`
-- `GET /reward-chain/rewardchain/partners/{id}`
+- `GET /rewardchain/rewardchain/partners`
+- `GET /rewardchain/rewardchain/partners/{id}`
 
 
 

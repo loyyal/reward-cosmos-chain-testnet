@@ -20,9 +20,9 @@ import (
 
 	// this line is used by starport scaffolding # 1
 
-	modulev1 "reward-chain/api/rewardchain/rewardchain/module"
-	"reward-chain/x/rewardchain/keeper"
-	"reward-chain/x/rewardchain/types"
+	modulev1 "rewardchain/api/rewardchain/rewardchain/module"
+	"rewardchain/x/rewardchain/keeper"
+	"rewardchain/x/rewardchain/types"
 )
 
 var (

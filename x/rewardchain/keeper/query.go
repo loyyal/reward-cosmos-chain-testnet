@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"reward-chain/x/rewardchain/types"
+	"rewardchain/x/rewardchain/types"
 )
 
 var _ types.QueryServer = Keeper{}

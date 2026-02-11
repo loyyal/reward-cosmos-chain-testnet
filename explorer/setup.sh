@@ -76,14 +76,14 @@ configure_chain() {
     mkdir -p chains/mainnet
     
     # Copy our chain configuration
-    cp $CHAIN_CONFIG_FILE chains/mainnet/reward-chain.json
+    cp $CHAIN_CONFIG_FILE chains/mainnet/rewardchain.json
     
     # Create a simplified configuration for the explorer
-    cat > chains/mainnet/reward-chain.json << 'EOF'
+    cat > chains/mainnet/rewardchain.json << 'EOF'
 {
-  "chain_name": "reward-chain",
-  "api": ["http://localhost:1317"],
-  "rpc": ["http://localhost:26657"],
+  "chain_name": "rewardchain",
+  "api": ["http://157.175.215.244:1317"],
+  "rpc": ["http://157.175.215.244:26657"],
   "sdk_version": "0.50.11",
   "coin_type": "118",
   "min_tx_fee": "5000",
@@ -164,13 +164,13 @@ print_manual_setup() {
     echo ""
     echo "3. Create chain configuration:"
     echo "   mkdir -p chains/mainnet"
-    echo "   cp $CHAIN_CONFIG_FILE chains/mainnet/reward-chain.json"
+    echo "   cp $CHAIN_CONFIG_FILE chains/mainnet/rewardchain.json"
     echo ""
     echo "4. Start the development server:"
     echo "   yarn dev  # or npm run dev"
     echo ""
     echo "5. Access the explorer at:"
-    echo "   http://localhost:5173/reward-chain"
+    echo "   http://localhost:5173/rewardchain"
     echo ""
     echo "============================================"
     echo "   Alternative: Use Hosted Ping.pub"

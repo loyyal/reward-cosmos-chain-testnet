@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"reward-chain/x/rewardchain/types"
+	"rewardchain/x/rewardchain/types"
 )
 
 func (k Keeper) Partner(goCtx context.Context, req *types.QueryPartnerRequest) (*types.QueryPartnerResponse, error) {
@@ -44,5 +44,3 @@ func (k Keeper) Partners(goCtx context.Context, req *types.QueryPartnersRequest)
 		Pagination: pageRes,
 	}, nil
 }
-
-

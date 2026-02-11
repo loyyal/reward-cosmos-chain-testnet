@@ -53,9 +53,9 @@ import (
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
 	"google.golang.org/protobuf/types/known/durationpb"
 
-	rewardchainmodulev1 "reward-chain/api/rewardchain/rewardchain/module"
-	_ "reward-chain/x/rewardchain/module" // import for side-effects
-	rewardchainmoduletypes "reward-chain/x/rewardchain/types"
+	rewardchainmodulev1 "rewardchain/api/rewardchain/rewardchain/module"
+	_ "rewardchain/x/rewardchain/module" // import for side-effects
+	rewardchainmoduletypes "rewardchain/x/rewardchain/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 

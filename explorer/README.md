@@ -36,7 +36,7 @@ This script will:
 4. Install dependencies
 5. Start the development server
 
-The explorer will be available at: **http://localhost:5173/reward-chain**
+The explorer will be available at: **http://localhost:5173/rewardchain**
 
 ### Manual Setup
 
@@ -55,7 +55,7 @@ yarn install  # or npm install --legacy-peer-deps
 mkdir -p chains/mainnet
 
 # 4. Copy the Reward Chain configuration
-cp /path/to/reward-chain/explorer/ping_pub_config.json chains/mainnet/reward-chain.json
+cp /path/to/rewardchain/explorer/ping_pub_config.json chains/mainnet/rewardchain.json
 
 # 5. Start the development server
 yarn dev  # or npm run dev
@@ -67,8 +67,8 @@ The chain configuration is stored in `ping_pub_config.json`. Here's what each fi
 
 ### Chain Information
 
-- **chain_name**: `reward-chain` - Display name for the chain
-- **registry_name**: `reward-chain` - Registry identifier
+- **chain_name**: `rewardchain` - Display name for the chain
+- **registry_name**: `rewardchain` - Registry identifier
 - **sdk_version**: `0.50.11` - Cosmos SDK version used by the chain
 - **coin_type**: `118` - HD wallet coin type (standard for Cosmos chains)
 
@@ -144,8 +144,8 @@ yarn dev  # or npm run dev
 
 Once running, open your browser and navigate to:
 
-- **Local**: http://localhost:5173/reward-chain
-- **Network**: http://YOUR_IP:5173/reward-chain (if accessible on your network)
+- **Local**: http://localhost:5173/rewardchain
+- **Network**: http://YOUR_IP:5173/rewardchain (if accessible on your network)
 
 ### Explorer Features
 
@@ -223,12 +223,12 @@ If the explorer can't connect to your node:
 
 1. Verify the configuration file is in the correct location:
    ```bash
-   ls ~/ping-pub-explorer/chains/mainnet/reward-chain.json
+   ls ~/ping-pub-explorer/chains/mainnet/rewardchain.json
    ```
 
 2. Check that the JSON is valid:
    ```bash
-   cat ~/ping-pub-explorer/chains/mainnet/reward-chain.json | jq .
+   cat ~/ping-pub-explorer/chains/mainnet/rewardchain.json | jq .
    ```
 
 3. Restart the explorer after adding/updating the configuration
@@ -256,14 +256,14 @@ For production deployments, you'll want to:
 To use the explorer with different networks (testnet, mainnet, etc.):
 
 1. Create separate configuration files:
-   - `chains/testnet/reward-chain-testnet.json`
-   - `chains/mainnet/reward-chain-mainnet.json`
+   - `chains/testnet/rewardchain-testnet.json`
+   - `chains/mainnet/rewardchain-mainnet.json`
 
 2. Update the endpoints in each configuration file
 
 3. Access via:
-   - `http://localhost:5173/reward-chain-testnet`
-   - `http://localhost:5173/reward-chain-mainnet`
+   - `http://localhost:5173/rewardchain-testnet`
+   - `http://localhost:5173/rewardchain-mainnet`
 
 ## Additional Resources
 

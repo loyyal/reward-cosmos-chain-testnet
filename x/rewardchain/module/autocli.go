@@ -3,7 +3,7 @@ package rewardchain
 import (
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
 
-	modulev1 "reward-chain/api/rewardchain/rewardchain"
+	modulev1 "rewardchain/api/rewardchain/rewardchain"
 )
 
 // AutoCLIOptions implements the autocli.HasAutoCLIConfig interface.
@@ -21,6 +21,9 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod: "Partner",
 					Use:       "partner [id]",
 					Short:     "Shows a partner by id",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
+						{ProtoField: "id"},
+					},
 				},
 				{
 					RpcMethod: "Partners",
@@ -31,27 +34,17 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 			},
 		},
 		Tx: &autocliv1.ServiceCommandDescriptor{
-			Service:              modulev1.Msg_ServiceDesc.ServiceName,
-			EnhanceCustomCommand: true, // only required if you want to use the custom command
+			Service: modulev1.Msg_ServiceDesc.ServiceName,
 			RpcCommandOptions: []*autocliv1.RpcCommandOptions{
 				{
 					RpcMethod: "UpdateParams",
 					Skip:      true, // skipped because authority gated
 				},
 				{
-					RpcMethod: "CreatePartner",
-					Use:       "create-partner [name] [category] [location] [country]",
-					Short:     "Create a partner",
-				},
-				{
-					RpcMethod: "DisablePartner",
-					Use:       "disable-partner [id]",
-					Short:     "Disable a partner by id",
-				},
-				{
-					RpcMethod: "UpdatePartner",
-					Use:       "update-partner [id] [name] [category] [location] [country]",
-					Short:     "Update a partner",
+					RpcMethod:      "CreatePartner",
+					Use:            "create-partner [name] [category] [country] [currency] [earn-cost-per-point] [burn-cost-per-point] [total-liquidity]",
+					Short:          "Send a create-partner tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "name"}, {ProtoField: "category"}, {ProtoField: "country"}, {ProtoField: "currency"}, {ProtoField: "earnCostPerPoint"}, {ProtoField: "burnCostPerPoint"}, {ProtoField: "totalLiquidity"}},
 				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},

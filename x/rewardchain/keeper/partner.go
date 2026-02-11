@@ -9,7 +9,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/types/query"
 
-	"reward-chain/x/rewardchain/types"
+	"rewardchain/x/rewardchain/types"
 )
 
 func (k Keeper) getPartnerStore(ctx context.Context) prefix.Store {
@@ -80,19 +80,51 @@ func (k Keeper) PaginatePartners(
 	ps := k.getPartnerStore(ctx)
 	partners := make([]types.Partner, 0)
 
-	pageRes, err := query.Paginate(ps, pageReq, func(_, value []byte) error {
+	// Collect all partners first, then filter if needed
+	iter := ps.Iterator(nil, nil)
+	defer iter.Close()
+
+	for ; iter.Valid(); iter.Next() {
 		var p types.Partner
-		k.cdc.MustUnmarshal(value, &p)
-		if !includeDisabled && p.Disabled {
-			return nil
+		k.cdc.MustUnmarshal(iter.Value(), &p)
+		if includeDisabled || !p.Disabled {
+			partners = append(partners, p)
 		}
-		partners = append(partners, p)
-		return nil
-	})
-	if err != nil {
-		return nil, nil, err
 	}
-	return partners, pageRes, nil
+
+	// Apply pagination
+	start := uint64(0)
+	limit := uint64(100) // default limit
+	if pageReq != nil {
+		if pageReq.Offset > 0 {
+			start = pageReq.Offset
+		}
+		if pageReq.Limit > 0 {
+			limit = pageReq.Limit
+		}
+	}
+
+	total := uint64(len(partners))
+	end := start + limit
+	if start >= total {
+		return []types.Partner{}, &query.PageResponse{
+			NextKey: nil,
+			Total:   total,
+		}, nil
+	}
+	if end > total {
+		end = total
+	}
+
+	paginatedPartners := partners[start:end]
+	var nextKey []byte
+	if end < total && len(paginatedPartners) > 0 {
+		// Set next key based on the last partner's ID
+		nextKey = types.PartnerKey(paginatedPartners[len(paginatedPartners)-1].Id + 1)
+	}
+
+	return paginatedPartners, &query.PageResponse{
+		NextKey: nextKey,
+		Total:   total,
+	}, nil
 }
-
-

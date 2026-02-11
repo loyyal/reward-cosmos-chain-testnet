@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	keepertest "reward-chain/testutil/keeper"
-	"reward-chain/x/rewardchain/types"
+	keepertest "rewardchain/testutil/keeper"
+	"rewardchain/x/rewardchain/types"
 )
 
 func TestParamsQuery(t *testing.T) {

@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 
-	"reward-chain/x/rewardchain/types"
+	"rewardchain/x/rewardchain/types"
 )
 
 func (k Keeper) IsAdmin(ctx context.Context, addr string) bool {
@@ -23,5 +23,3 @@ func requireAdmin(k Keeper, ctx context.Context, addr string) error {
 	}
 	return types.ErrUnauthorized
 }
-
-

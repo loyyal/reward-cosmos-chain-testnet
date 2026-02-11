@@ -3,10 +3,10 @@ package rewardchain_test
 import (
 	"testing"
 
-	keepertest "reward-chain/testutil/keeper"
-	"reward-chain/testutil/nullify"
-	rewardchain "reward-chain/x/rewardchain/module"
-	"reward-chain/x/rewardchain/types"
+	keepertest "rewardchain/testutil/keeper"
+	"rewardchain/testutil/nullify"
+	rewardchain "rewardchain/x/rewardchain/module"
+	"rewardchain/x/rewardchain/types"
 
 	"github.com/stretchr/testify/require"
 )

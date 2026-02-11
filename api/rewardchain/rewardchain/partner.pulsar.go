@@ -15,13 +15,20 @@ import (
 )
 
 var (
-	md_Partner          protoreflect.MessageDescriptor
-	fd_Partner_id       protoreflect.FieldDescriptor
-	fd_Partner_name     protoreflect.FieldDescriptor
-	fd_Partner_category protoreflect.FieldDescriptor
-	fd_Partner_location protoreflect.FieldDescriptor
-	fd_Partner_country  protoreflect.FieldDescriptor
-	fd_Partner_disabled protoreflect.FieldDescriptor
+	md_Partner                       protoreflect.MessageDescriptor
+	fd_Partner_id                    protoreflect.FieldDescriptor
+	fd_Partner_name                  protoreflect.FieldDescriptor
+	fd_Partner_category              protoreflect.FieldDescriptor
+	fd_Partner_location              protoreflect.FieldDescriptor
+	fd_Partner_country               protoreflect.FieldDescriptor
+	fd_Partner_disabled              protoreflect.FieldDescriptor
+	fd_Partner_total_liquidity       protoreflect.FieldDescriptor
+	fd_Partner_available_liquidity   protoreflect.FieldDescriptor
+	fd_Partner_on_hold_liquidity     protoreflect.FieldDescriptor
+	fd_Partner_earn_cost_per_point   protoreflect.FieldDescriptor
+	fd_Partner_redeem_cost_per_point protoreflect.FieldDescriptor
+	fd_Partner_starts_from           protoreflect.FieldDescriptor
+	fd_Partner_ends_before           protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -33,6 +40,13 @@ func init() {
 	fd_Partner_location = md_Partner.Fields().ByName("location")
 	fd_Partner_country = md_Partner.Fields().ByName("country")
 	fd_Partner_disabled = md_Partner.Fields().ByName("disabled")
+	fd_Partner_total_liquidity = md_Partner.Fields().ByName("total_liquidity")
+	fd_Partner_available_liquidity = md_Partner.Fields().ByName("available_liquidity")
+	fd_Partner_on_hold_liquidity = md_Partner.Fields().ByName("on_hold_liquidity")
+	fd_Partner_earn_cost_per_point = md_Partner.Fields().ByName("earn_cost_per_point")
+	fd_Partner_redeem_cost_per_point = md_Partner.Fields().ByName("redeem_cost_per_point")
+	fd_Partner_starts_from = md_Partner.Fields().ByName("starts_from")
+	fd_Partner_ends_before = md_Partner.Fields().ByName("ends_before")
 }
 
 var _ protoreflect.Message = (*fastReflection_Partner)(nil)
@@ -136,6 +150,48 @@ func (x *fastReflection_Partner) Range(f func(protoreflect.FieldDescriptor, prot
 			return
 		}
 	}
+	if x.TotalLiquidity != "" {
+		value := protoreflect.ValueOfString(x.TotalLiquidity)
+		if !f(fd_Partner_total_liquidity, value) {
+			return
+		}
+	}
+	if x.AvailableLiquidity != "" {
+		value := protoreflect.ValueOfString(x.AvailableLiquidity)
+		if !f(fd_Partner_available_liquidity, value) {
+			return
+		}
+	}
+	if x.OnHoldLiquidity != "" {
+		value := protoreflect.ValueOfString(x.OnHoldLiquidity)
+		if !f(fd_Partner_on_hold_liquidity, value) {
+			return
+		}
+	}
+	if x.EarnCostPerPoint != "" {
+		value := protoreflect.ValueOfString(x.EarnCostPerPoint)
+		if !f(fd_Partner_earn_cost_per_point, value) {
+			return
+		}
+	}
+	if x.RedeemCostPerPoint != "" {
+		value := protoreflect.ValueOfString(x.RedeemCostPerPoint)
+		if !f(fd_Partner_redeem_cost_per_point, value) {
+			return
+		}
+	}
+	if x.StartsFrom != "" {
+		value := protoreflect.ValueOfString(x.StartsFrom)
+		if !f(fd_Partner_starts_from, value) {
+			return
+		}
+	}
+	if x.EndsBefore != "" {
+		value := protoreflect.ValueOfString(x.EndsBefore)
+		if !f(fd_Partner_ends_before, value) {
+			return
+		}
+	}
 }
 
 // Has reports whether a field is populated.
@@ -163,6 +219,20 @@ func (x *fastReflection_Partner) Has(fd protoreflect.FieldDescriptor) bool {
 		return x.Country != ""
 	case "rewardchain.rewardchain.Partner.disabled":
 		return x.Disabled != false
+	case "rewardchain.rewardchain.Partner.total_liquidity":
+		return x.TotalLiquidity != ""
+	case "rewardchain.rewardchain.Partner.available_liquidity":
+		return x.AvailableLiquidity != ""
+	case "rewardchain.rewardchain.Partner.on_hold_liquidity":
+		return x.OnHoldLiquidity != ""
+	case "rewardchain.rewardchain.Partner.earn_cost_per_point":
+		return x.EarnCostPerPoint != ""
+	case "rewardchain.rewardchain.Partner.redeem_cost_per_point":
+		return x.RedeemCostPerPoint != ""
+	case "rewardchain.rewardchain.Partner.starts_from":
+		return x.StartsFrom != ""
+	case "rewardchain.rewardchain.Partner.ends_before":
+		return x.EndsBefore != ""
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: rewardchain.rewardchain.Partner"))
@@ -191,6 +261,20 @@ func (x *fastReflection_Partner) Clear(fd protoreflect.FieldDescriptor) {
 		x.Country = ""
 	case "rewardchain.rewardchain.Partner.disabled":
 		x.Disabled = false
+	case "rewardchain.rewardchain.Partner.total_liquidity":
+		x.TotalLiquidity = ""
+	case "rewardchain.rewardchain.Partner.available_liquidity":
+		x.AvailableLiquidity = ""
+	case "rewardchain.rewardchain.Partner.on_hold_liquidity":
+		x.OnHoldLiquidity = ""
+	case "rewardchain.rewardchain.Partner.earn_cost_per_point":
+		x.EarnCostPerPoint = ""
+	case "rewardchain.rewardchain.Partner.redeem_cost_per_point":
+		x.RedeemCostPerPoint = ""
+	case "rewardchain.rewardchain.Partner.starts_from":
+		x.StartsFrom = ""
+	case "rewardchain.rewardchain.Partner.ends_before":
+		x.EndsBefore = ""
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: rewardchain.rewardchain.Partner"))
@@ -225,6 +309,27 @@ func (x *fastReflection_Partner) Get(descriptor protoreflect.FieldDescriptor) pr
 	case "rewardchain.rewardchain.Partner.disabled":
 		value := x.Disabled
 		return protoreflect.ValueOfBool(value)
+	case "rewardchain.rewardchain.Partner.total_liquidity":
+		value := x.TotalLiquidity
+		return protoreflect.ValueOfString(value)
+	case "rewardchain.rewardchain.Partner.available_liquidity":
+		value := x.AvailableLiquidity
+		return protoreflect.ValueOfString(value)
+	case "rewardchain.rewardchain.Partner.on_hold_liquidity":
+		value := x.OnHoldLiquidity
+		return protoreflect.ValueOfString(value)
+	case "rewardchain.rewardchain.Partner.earn_cost_per_point":
+		value := x.EarnCostPerPoint
+		return protoreflect.ValueOfString(value)
+	case "rewardchain.rewardchain.Partner.redeem_cost_per_point":
+		value := x.RedeemCostPerPoint
+		return protoreflect.ValueOfString(value)
+	case "rewardchain.rewardchain.Partner.starts_from":
+		value := x.StartsFrom
+		return protoreflect.ValueOfString(value)
+	case "rewardchain.rewardchain.Partner.ends_before":
+		value := x.EndsBefore
+		return protoreflect.ValueOfString(value)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: rewardchain.rewardchain.Partner"))
@@ -257,6 +362,20 @@ func (x *fastReflection_Partner) Set(fd protoreflect.FieldDescriptor, value prot
 		x.Country = value.Interface().(string)
 	case "rewardchain.rewardchain.Partner.disabled":
 		x.Disabled = value.Bool()
+	case "rewardchain.rewardchain.Partner.total_liquidity":
+		x.TotalLiquidity = value.Interface().(string)
+	case "rewardchain.rewardchain.Partner.available_liquidity":
+		x.AvailableLiquidity = value.Interface().(string)
+	case "rewardchain.rewardchain.Partner.on_hold_liquidity":
+		x.OnHoldLiquidity = value.Interface().(string)
+	case "rewardchain.rewardchain.Partner.earn_cost_per_point":
+		x.EarnCostPerPoint = value.Interface().(string)
+	case "rewardchain.rewardchain.Partner.redeem_cost_per_point":
+		x.RedeemCostPerPoint = value.Interface().(string)
+	case "rewardchain.rewardchain.Partner.starts_from":
+		x.StartsFrom = value.Interface().(string)
+	case "rewardchain.rewardchain.Partner.ends_before":
+		x.EndsBefore = value.Interface().(string)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: rewardchain.rewardchain.Partner"))
@@ -289,6 +408,20 @@ func (x *fastReflection_Partner) Mutable(fd protoreflect.FieldDescriptor) protor
 		panic(fmt.Errorf("field country of message rewardchain.rewardchain.Partner is not mutable"))
 	case "rewardchain.rewardchain.Partner.disabled":
 		panic(fmt.Errorf("field disabled of message rewardchain.rewardchain.Partner is not mutable"))
+	case "rewardchain.rewardchain.Partner.total_liquidity":
+		panic(fmt.Errorf("field total_liquidity of message rewardchain.rewardchain.Partner is not mutable"))
+	case "rewardchain.rewardchain.Partner.available_liquidity":
+		panic(fmt.Errorf("field available_liquidity of message rewardchain.rewardchain.Partner is not mutable"))
+	case "rewardchain.rewardchain.Partner.on_hold_liquidity":
+		panic(fmt.Errorf("field on_hold_liquidity of message rewardchain.rewardchain.Partner is not mutable"))
+	case "rewardchain.rewardchain.Partner.earn_cost_per_point":
+		panic(fmt.Errorf("field earn_cost_per_point of message rewardchain.rewardchain.Partner is not mutable"))
+	case "rewardchain.rewardchain.Partner.redeem_cost_per_point":
+		panic(fmt.Errorf("field redeem_cost_per_point of message rewardchain.rewardchain.Partner is not mutable"))
+	case "rewardchain.rewardchain.Partner.starts_from":
+		panic(fmt.Errorf("field starts_from of message rewardchain.rewardchain.Partner is not mutable"))
+	case "rewardchain.rewardchain.Partner.ends_before":
+		panic(fmt.Errorf("field ends_before of message rewardchain.rewardchain.Partner is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: rewardchain.rewardchain.Partner"))
@@ -314,6 +447,20 @@ func (x *fastReflection_Partner) NewField(fd protoreflect.FieldDescriptor) proto
 		return protoreflect.ValueOfString("")
 	case "rewardchain.rewardchain.Partner.disabled":
 		return protoreflect.ValueOfBool(false)
+	case "rewardchain.rewardchain.Partner.total_liquidity":
+		return protoreflect.ValueOfString("")
+	case "rewardchain.rewardchain.Partner.available_liquidity":
+		return protoreflect.ValueOfString("")
+	case "rewardchain.rewardchain.Partner.on_hold_liquidity":
+		return protoreflect.ValueOfString("")
+	case "rewardchain.rewardchain.Partner.earn_cost_per_point":
+		return protoreflect.ValueOfString("")
+	case "rewardchain.rewardchain.Partner.redeem_cost_per_point":
+		return protoreflect.ValueOfString("")
+	case "rewardchain.rewardchain.Partner.starts_from":
+		return protoreflect.ValueOfString("")
+	case "rewardchain.rewardchain.Partner.ends_before":
+		return protoreflect.ValueOfString("")
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: rewardchain.rewardchain.Partner"))
@@ -405,6 +552,34 @@ func (x *fastReflection_Partner) ProtoMethods() *protoiface.Methods {
 		if x.Disabled {
 			n += 2
 		}
+		l = len(x.TotalLiquidity)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.AvailableLiquidity)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.OnHoldLiquidity)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.EarnCostPerPoint)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.RedeemCostPerPoint)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.StartsFrom)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.EndsBefore)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
 		}
@@ -433,6 +608,55 @@ func (x *fastReflection_Partner) ProtoMethods() *protoiface.Methods {
 		if x.unknownFields != nil {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
+		}
+		if len(x.EndsBefore) > 0 {
+			i -= len(x.EndsBefore)
+			copy(dAtA[i:], x.EndsBefore)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.EndsBefore)))
+			i--
+			dAtA[i] = 0x6a
+		}
+		if len(x.StartsFrom) > 0 {
+			i -= len(x.StartsFrom)
+			copy(dAtA[i:], x.StartsFrom)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.StartsFrom)))
+			i--
+			dAtA[i] = 0x62
+		}
+		if len(x.RedeemCostPerPoint) > 0 {
+			i -= len(x.RedeemCostPerPoint)
+			copy(dAtA[i:], x.RedeemCostPerPoint)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.RedeemCostPerPoint)))
+			i--
+			dAtA[i] = 0x5a
+		}
+		if len(x.EarnCostPerPoint) > 0 {
+			i -= len(x.EarnCostPerPoint)
+			copy(dAtA[i:], x.EarnCostPerPoint)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.EarnCostPerPoint)))
+			i--
+			dAtA[i] = 0x52
+		}
+		if len(x.OnHoldLiquidity) > 0 {
+			i -= len(x.OnHoldLiquidity)
+			copy(dAtA[i:], x.OnHoldLiquidity)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.OnHoldLiquidity)))
+			i--
+			dAtA[i] = 0x4a
+		}
+		if len(x.AvailableLiquidity) > 0 {
+			i -= len(x.AvailableLiquidity)
+			copy(dAtA[i:], x.AvailableLiquidity)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.AvailableLiquidity)))
+			i--
+			dAtA[i] = 0x42
+		}
+		if len(x.TotalLiquidity) > 0 {
+			i -= len(x.TotalLiquidity)
+			copy(dAtA[i:], x.TotalLiquidity)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.TotalLiquidity)))
+			i--
+			dAtA[i] = 0x3a
 		}
 		if x.Disabled {
 			i--
@@ -693,6 +917,230 @@ func (x *fastReflection_Partner) ProtoMethods() *protoiface.Methods {
 					}
 				}
 				x.Disabled = bool(v != 0)
+			case 7:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TotalLiquidity", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.TotalLiquidity = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 8:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field AvailableLiquidity", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.AvailableLiquidity = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 9:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field OnHoldLiquidity", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.OnHoldLiquidity = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 10:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field EarnCostPerPoint", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.EarnCostPerPoint = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 11:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field RedeemCostPerPoint", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.RedeemCostPerPoint = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 12:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field StartsFrom", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.StartsFrom = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 13:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field EndsBefore", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.EndsBefore = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -747,12 +1195,19 @@ type Partner struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id       uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name     string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Category string `protobuf:"bytes,3,opt,name=category,proto3" json:"category,omitempty"`
-	Location string `protobuf:"bytes,4,opt,name=location,proto3" json:"location,omitempty"`
-	Country  string `protobuf:"bytes,5,opt,name=country,proto3" json:"country,omitempty"`
-	Disabled bool   `protobuf:"varint,6,opt,name=disabled,proto3" json:"disabled,omitempty"`
+	Id                 uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name               string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Category           string `protobuf:"bytes,3,opt,name=category,proto3" json:"category,omitempty"`
+	Location           string `protobuf:"bytes,4,opt,name=location,proto3" json:"location,omitempty"`
+	Country            string `protobuf:"bytes,5,opt,name=country,proto3" json:"country,omitempty"`
+	Disabled           bool   `protobuf:"varint,6,opt,name=disabled,proto3" json:"disabled,omitempty"`
+	TotalLiquidity     string `protobuf:"bytes,7,opt,name=total_liquidity,json=totalLiquidity,proto3" json:"total_liquidity,omitempty"`
+	AvailableLiquidity string `protobuf:"bytes,8,opt,name=available_liquidity,json=availableLiquidity,proto3" json:"available_liquidity,omitempty"`
+	OnHoldLiquidity    string `protobuf:"bytes,9,opt,name=on_hold_liquidity,json=onHoldLiquidity,proto3" json:"on_hold_liquidity,omitempty"`
+	EarnCostPerPoint   string `protobuf:"bytes,10,opt,name=earn_cost_per_point,json=earnCostPerPoint,proto3" json:"earn_cost_per_point,omitempty"`
+	RedeemCostPerPoint string `protobuf:"bytes,11,opt,name=redeem_cost_per_point,json=redeemCostPerPoint,proto3" json:"redeem_cost_per_point,omitempty"`
+	StartsFrom         string `protobuf:"bytes,12,opt,name=starts_from,json=startsFrom,proto3" json:"starts_from,omitempty"`
+	EndsBefore         string `protobuf:"bytes,13,opt,name=ends_before,json=endsBefore,proto3" json:"ends_before,omitempty"`
 }
 
 func (x *Partner) Reset() {
@@ -817,6 +1272,55 @@ func (x *Partner) GetDisabled() bool {
 	return false
 }
 
+func (x *Partner) GetTotalLiquidity() string {
+	if x != nil {
+		return x.TotalLiquidity
+	}
+	return ""
+}
+
+func (x *Partner) GetAvailableLiquidity() string {
+	if x != nil {
+		return x.AvailableLiquidity
+	}
+	return ""
+}
+
+func (x *Partner) GetOnHoldLiquidity() string {
+	if x != nil {
+		return x.OnHoldLiquidity
+	}
+	return ""
+}
+
+func (x *Partner) GetEarnCostPerPoint() string {
+	if x != nil {
+		return x.EarnCostPerPoint
+	}
+	return ""
+}
+
+func (x *Partner) GetRedeemCostPerPoint() string {
+	if x != nil {
+		return x.RedeemCostPerPoint
+	}
+	return ""
+}
+
+func (x *Partner) GetStartsFrom() string {
+	if x != nil {
+		return x.StartsFrom
+	}
+	return ""
+}
+
+func (x *Partner) GetEndsBefore() string {
+	if x != nil {
+		return x.EndsBefore
+	}
+	return ""
+}
+
 var File_rewardchain_rewardchain_partner_proto protoreflect.FileDescriptor
 
 var file_rewardchain_rewardchain_partner_proto_rawDesc = []byte{
@@ -826,7 +1330,7 @@ var file_rewardchain_rewardchain_partner_proto_rawDesc = []byte{
 	0x68, 0x61, 0x69, 0x6e, 0x2e, 0x72, 0x65, 0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61, 0x69, 0x6e,
 	0x1a, 0x11, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2f, 0x61, 0x6d, 0x69, 0x6e, 0x6f, 0x2e, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67,
-	0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xc3, 0x01, 0x0a, 0x07, 0x50, 0x61,
+	0x6f, 0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xed, 0x03, 0x0a, 0x07, 0x50, 0x61,
 	0x72, 0x74, 0x6e, 0x65, 0x72, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
 	0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20,
 	0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x63, 0x61, 0x74,
@@ -836,23 +1340,42 @@ var file_rewardchain_rewardchain_partner_proto_rawDesc = []byte{
 	0x6e, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x72, 0x79, 0x18, 0x05, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x07, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x1a, 0x0a, 0x08, 0x64,
 	0x69, 0x73, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x18, 0x06, 0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x64,
-	0x69, 0x73, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x3a, 0x26, 0x8a, 0xe7, 0xb0, 0x2a, 0x21, 0x72, 0x65,
-	0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x78, 0x2f, 0x72, 0x65, 0x77, 0x61,
-	0x72, 0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x50, 0x61, 0x72, 0x74, 0x6e, 0x65, 0x72, 0x42,
-	0xd2, 0x01, 0x0a, 0x1b, 0x63, 0x6f, 0x6d, 0x2e, 0x72, 0x65, 0x77, 0x61, 0x72, 0x64, 0x63, 0x68,
-	0x61, 0x69, 0x6e, 0x2e, 0x72, 0x65, 0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x42,
-	0x0c, 0x50, 0x61, 0x72, 0x74, 0x6e, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a,
-	0x28, 0x72, 0x65, 0x77, 0x61, 0x72, 0x64, 0x2d, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x61, 0x70,
-	0x69, 0x2f, 0x72, 0x65, 0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x72, 0x65,
-	0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0xa2, 0x02, 0x03, 0x52, 0x52, 0x58, 0xaa,
-	0x02, 0x17, 0x52, 0x65, 0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x52, 0x65,
-	0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0xca, 0x02, 0x17, 0x52, 0x65, 0x77, 0x61,
-	0x72, 0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x52, 0x65, 0x77, 0x61, 0x72, 0x64, 0x63, 0x68,
-	0x61, 0x69, 0x6e, 0xe2, 0x02, 0x23, 0x52, 0x65, 0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61, 0x69,
-	0x6e, 0x5c, 0x52, 0x65, 0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x47, 0x50,
-	0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x18, 0x52, 0x65, 0x77, 0x61,
-	0x72, 0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x3a, 0x3a, 0x52, 0x65, 0x77, 0x61, 0x72, 0x64, 0x63,
-	0x68, 0x61, 0x69, 0x6e, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x69, 0x73, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x12, 0x27, 0x0a, 0x0f, 0x74, 0x6f, 0x74, 0x61, 0x6c,
+	0x5f, 0x6c, 0x69, 0x71, 0x75, 0x69, 0x64, 0x69, 0x74, 0x79, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x0e, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x4c, 0x69, 0x71, 0x75, 0x69, 0x64, 0x69, 0x74, 0x79,
+	0x12, 0x2f, 0x0a, 0x13, 0x61, 0x76, 0x61, 0x69, 0x6c, 0x61, 0x62, 0x6c, 0x65, 0x5f, 0x6c, 0x69,
+	0x71, 0x75, 0x69, 0x64, 0x69, 0x74, 0x79, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x12, 0x61,
+	0x76, 0x61, 0x69, 0x6c, 0x61, 0x62, 0x6c, 0x65, 0x4c, 0x69, 0x71, 0x75, 0x69, 0x64, 0x69, 0x74,
+	0x79, 0x12, 0x2a, 0x0a, 0x11, 0x6f, 0x6e, 0x5f, 0x68, 0x6f, 0x6c, 0x64, 0x5f, 0x6c, 0x69, 0x71,
+	0x75, 0x69, 0x64, 0x69, 0x74, 0x79, 0x18, 0x09, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0f, 0x6f, 0x6e,
+	0x48, 0x6f, 0x6c, 0x64, 0x4c, 0x69, 0x71, 0x75, 0x69, 0x64, 0x69, 0x74, 0x79, 0x12, 0x2d, 0x0a,
+	0x13, 0x65, 0x61, 0x72, 0x6e, 0x5f, 0x63, 0x6f, 0x73, 0x74, 0x5f, 0x70, 0x65, 0x72, 0x5f, 0x70,
+	0x6f, 0x69, 0x6e, 0x74, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x09, 0x52, 0x10, 0x65, 0x61, 0x72, 0x6e,
+	0x43, 0x6f, 0x73, 0x74, 0x50, 0x65, 0x72, 0x50, 0x6f, 0x69, 0x6e, 0x74, 0x12, 0x31, 0x0a, 0x15,
+	0x72, 0x65, 0x64, 0x65, 0x65, 0x6d, 0x5f, 0x63, 0x6f, 0x73, 0x74, 0x5f, 0x70, 0x65, 0x72, 0x5f,
+	0x70, 0x6f, 0x69, 0x6e, 0x74, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x09, 0x52, 0x12, 0x72, 0x65, 0x64,
+	0x65, 0x65, 0x6d, 0x43, 0x6f, 0x73, 0x74, 0x50, 0x65, 0x72, 0x50, 0x6f, 0x69, 0x6e, 0x74, 0x12,
+	0x1f, 0x0a, 0x0b, 0x73, 0x74, 0x61, 0x72, 0x74, 0x73, 0x5f, 0x66, 0x72, 0x6f, 0x6d, 0x18, 0x0c,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x73, 0x74, 0x61, 0x72, 0x74, 0x73, 0x46, 0x72, 0x6f, 0x6d,
+	0x12, 0x1f, 0x0a, 0x0b, 0x65, 0x6e, 0x64, 0x73, 0x5f, 0x62, 0x65, 0x66, 0x6f, 0x72, 0x65, 0x18,
+	0x0d, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x65, 0x6e, 0x64, 0x73, 0x42, 0x65, 0x66, 0x6f, 0x72,
+	0x65, 0x3a, 0x26, 0x8a, 0xe7, 0xb0, 0x2a, 0x21, 0x72, 0x65, 0x77, 0x61, 0x72, 0x64, 0x63, 0x68,
+	0x61, 0x69, 0x6e, 0x2f, 0x78, 0x2f, 0x72, 0x65, 0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61, 0x69,
+	0x6e, 0x2f, 0x50, 0x61, 0x72, 0x74, 0x6e, 0x65, 0x72, 0x42, 0xd1, 0x01, 0x0a, 0x1b, 0x63, 0x6f,
+	0x6d, 0x2e, 0x72, 0x65, 0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x72, 0x65,
+	0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x42, 0x0c, 0x50, 0x61, 0x72, 0x74, 0x6e,
+	0x65, 0x72, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x27, 0x72, 0x65, 0x77, 0x61, 0x72,
+	0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x72, 0x65, 0x77, 0x61, 0x72,
+	0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x72, 0x65, 0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61,
+	0x69, 0x6e, 0xa2, 0x02, 0x03, 0x52, 0x52, 0x58, 0xaa, 0x02, 0x17, 0x52, 0x65, 0x77, 0x61, 0x72,
+	0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x52, 0x65, 0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61,
+	0x69, 0x6e, 0xca, 0x02, 0x17, 0x52, 0x65, 0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61, 0x69, 0x6e,
+	0x5c, 0x52, 0x65, 0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0xe2, 0x02, 0x23, 0x52,
+	0x65, 0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x52, 0x65, 0x77, 0x61, 0x72,
+	0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61,
+	0x74, 0x61, 0xea, 0x02, 0x18, 0x52, 0x65, 0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61, 0x69, 0x6e,
+	0x3a, 0x3a, 0x52, 0x65, 0x77, 0x61, 0x72, 0x64, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x62, 0x06, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (

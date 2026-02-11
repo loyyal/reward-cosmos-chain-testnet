@@ -26,12 +26,19 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // Partner defines an on-chain partner record.
 type Partner struct {
-	Id       uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name     string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Category string `protobuf:"bytes,3,opt,name=category,proto3" json:"category,omitempty"`
-	Location string `protobuf:"bytes,4,opt,name=location,proto3" json:"location,omitempty"`
-	Country  string `protobuf:"bytes,5,opt,name=country,proto3" json:"country,omitempty"`
-	Disabled bool   `protobuf:"varint,6,opt,name=disabled,proto3" json:"disabled,omitempty"`
+	Id                 uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name               string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Category           string `protobuf:"bytes,3,opt,name=category,proto3" json:"category,omitempty"`
+	Location           string `protobuf:"bytes,4,opt,name=location,proto3" json:"location,omitempty"`
+	Country            string `protobuf:"bytes,5,opt,name=country,proto3" json:"country,omitempty"`
+	Disabled           bool   `protobuf:"varint,6,opt,name=disabled,proto3" json:"disabled,omitempty"`
+	TotalLiquidity     string `protobuf:"bytes,7,opt,name=total_liquidity,json=totalLiquidity,proto3" json:"total_liquidity,omitempty"`
+	AvailableLiquidity string `protobuf:"bytes,8,opt,name=available_liquidity,json=availableLiquidity,proto3" json:"available_liquidity,omitempty"`
+	OnHoldLiquidity    string `protobuf:"bytes,9,opt,name=on_hold_liquidity,json=onHoldLiquidity,proto3" json:"on_hold_liquidity,omitempty"`
+	EarnCostPerPoint   string `protobuf:"bytes,10,opt,name=earn_cost_per_point,json=earnCostPerPoint,proto3" json:"earn_cost_per_point,omitempty"`
+	RedeemCostPerPoint string `protobuf:"bytes,11,opt,name=redeem_cost_per_point,json=redeemCostPerPoint,proto3" json:"redeem_cost_per_point,omitempty"`
+	StartsFrom         string `protobuf:"bytes,12,opt,name=starts_from,json=startsFrom,proto3" json:"starts_from,omitempty"`
+	EndsBefore         string `protobuf:"bytes,13,opt,name=ends_before,json=endsBefore,proto3" json:"ends_before,omitempty"`
 }
 
 func (m *Partner) Reset()         { *m = Partner{} }
@@ -109,6 +116,55 @@ func (m *Partner) GetDisabled() bool {
 	return false
 }
 
+func (m *Partner) GetTotalLiquidity() string {
+	if m != nil {
+		return m.TotalLiquidity
+	}
+	return ""
+}
+
+func (m *Partner) GetAvailableLiquidity() string {
+	if m != nil {
+		return m.AvailableLiquidity
+	}
+	return ""
+}
+
+func (m *Partner) GetOnHoldLiquidity() string {
+	if m != nil {
+		return m.OnHoldLiquidity
+	}
+	return ""
+}
+
+func (m *Partner) GetEarnCostPerPoint() string {
+	if m != nil {
+		return m.EarnCostPerPoint
+	}
+	return ""
+}
+
+func (m *Partner) GetRedeemCostPerPoint() string {
+	if m != nil {
+		return m.RedeemCostPerPoint
+	}
+	return ""
+}
+
+func (m *Partner) GetStartsFrom() string {
+	if m != nil {
+		return m.StartsFrom
+	}
+	return ""
+}
+
+func (m *Partner) GetEndsBefore() string {
+	if m != nil {
+		return m.EndsBefore
+	}
+	return ""
+}
+
 func init() {
 	proto.RegisterType((*Partner)(nil), "rewardchain.rewardchain.Partner")
 }
@@ -118,23 +174,33 @@ func init() {
 }
 
 var fileDescriptor_cefbdf3311045880 = []byte{
-	// 254 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x52, 0x2d, 0x4a, 0x2d, 0x4f,
-	0x2c, 0x4a, 0x49, 0xce, 0x48, 0xcc, 0xcc, 0xd3, 0x47, 0x66, 0x17, 0x24, 0x16, 0x95, 0xe4, 0xa5,
-	0x16, 0xe9, 0x15, 0x14, 0xe5, 0x97, 0xe4, 0x0b, 0x89, 0x23, 0x49, 0xe9, 0x21, 0xb1, 0xa5, 0x04,
-	0x13, 0x73, 0x33, 0xf3, 0xf2, 0xf5, 0xc1, 0x24, 0x44, 0xad, 0x94, 0x48, 0x7a, 0x7e, 0x7a, 0x3e,
-	0x98, 0xa9, 0x0f, 0x62, 0x41, 0x44, 0x95, 0x0e, 0x33, 0x72, 0xb1, 0x07, 0x40, 0xcc, 0x14, 0xe2,
-	0xe3, 0x62, 0xca, 0x4c, 0x91, 0x60, 0x54, 0x60, 0xd4, 0x60, 0x09, 0x62, 0xca, 0x4c, 0x11, 0x12,
-	0xe2, 0x62, 0xc9, 0x4b, 0xcc, 0x4d, 0x95, 0x60, 0x52, 0x60, 0xd4, 0xe0, 0x0c, 0x02, 0xb3, 0x85,
-	0xa4, 0xb8, 0x38, 0x92, 0x13, 0x4b, 0x52, 0xd3, 0xf3, 0x8b, 0x2a, 0x25, 0x98, 0xc1, 0xe2, 0x70,
-	0x3e, 0x48, 0x2e, 0x27, 0x3f, 0x39, 0xb1, 0x24, 0x33, 0x3f, 0x4f, 0x82, 0x05, 0x22, 0x07, 0xe3,
-	0x0b, 0x49, 0x70, 0xb1, 0x27, 0xe7, 0x97, 0xe6, 0x95, 0x14, 0x55, 0x4a, 0xb0, 0x82, 0xa5, 0x60,
-	0x5c, 0x90, 0xae, 0x94, 0xcc, 0xe2, 0xc4, 0xa4, 0x9c, 0xd4, 0x14, 0x09, 0x36, 0x05, 0x46, 0x0d,
-	0x8e, 0x20, 0x38, 0xdf, 0x4a, 0xad, 0xeb, 0xf9, 0x06, 0x2d, 0x45, 0x64, 0xff, 0x57, 0xa0, 0x84,
-	0x06, 0xd4, 0xe5, 0x4e, 0x56, 0x27, 0x1e, 0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8, 0xe0, 0x91,
-	0x1c, 0xe3, 0x84, 0xc7, 0x72, 0x0c, 0x17, 0x1e, 0xcb, 0x31, 0xdc, 0x78, 0x2c, 0xc7, 0x10, 0xa5,
-	0x00, 0x51, 0xae, 0x8b, 0x4d, 0x77, 0x49, 0x65, 0x41, 0x6a, 0x71, 0x12, 0x1b, 0x38, 0x20, 0x8c,
-	0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0xc3, 0x12, 0x72, 0x8d, 0x73, 0x01, 0x00, 0x00,
+	// 406 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x92, 0xcf, 0x8e, 0xd2, 0x40,
+	0x1c, 0xc7, 0x29, 0x20, 0x7f, 0x06, 0x05, 0x19, 0x34, 0x4e, 0x38, 0x14, 0x34, 0x51, 0x09, 0x89,
+	0x34, 0xc6, 0x93, 0x1e, 0x31, 0x31, 0x1e, 0x3c, 0x10, 0x8e, 0x5e, 0x9a, 0xa1, 0x33, 0xc0, 0x24,
+	0xed, 0xfc, 0xea, 0x74, 0x50, 0xfb, 0x0a, 0x9e, 0x7c, 0x94, 0x7d, 0x8c, 0x3d, 0x72, 0xdc, 0xe3,
+	0x06, 0x0e, 0x7b, 0xda, 0x77, 0xd8, 0xcc, 0xcc, 0x02, 0x65, 0x93, 0xbd, 0x34, 0xdf, 0x3f, 0x9f,
+	0x6f, 0xd3, 0xa4, 0x3f, 0xf4, 0x56, 0xf1, 0x3f, 0x54, 0xb1, 0x68, 0x4d, 0x85, 0x0c, 0x8a, 0x3a,
+	0xa5, 0x4a, 0x4b, 0xae, 0x26, 0xa9, 0x02, 0x0d, 0xf8, 0x55, 0xa1, 0x9a, 0x14, 0x74, 0xbf, 0x4b,
+	0x13, 0x21, 0x21, 0xb0, 0x4f, 0xc7, 0xf6, 0x5f, 0xac, 0x60, 0x05, 0x56, 0x06, 0x46, 0xb9, 0xf4,
+	0xcd, 0x6d, 0x05, 0xd5, 0x67, 0xee, 0x9d, 0xb8, 0x8d, 0xca, 0x82, 0x11, 0x6f, 0xe8, 0x8d, 0xaa,
+	0xf3, 0xb2, 0x60, 0x18, 0xa3, 0xaa, 0xa4, 0x09, 0x27, 0xe5, 0xa1, 0x37, 0x6a, 0xce, 0xad, 0xc6,
+	0x7d, 0xd4, 0x88, 0xa8, 0xe6, 0x2b, 0x50, 0x39, 0xa9, 0xd8, 0xfc, 0xe8, 0x4d, 0x17, 0x43, 0x44,
+	0xb5, 0x00, 0x49, 0xaa, 0xae, 0x3b, 0x78, 0x4c, 0x50, 0x3d, 0x82, 0x8d, 0xd4, 0x2a, 0x27, 0x4f,
+	0x6c, 0x75, 0xb0, 0x66, 0xc5, 0x44, 0x46, 0x17, 0x31, 0x67, 0xa4, 0x36, 0xf4, 0x46, 0x8d, 0xf9,
+	0xd1, 0xe3, 0xf7, 0xa8, 0xa3, 0x41, 0xd3, 0x38, 0x8c, 0xc5, 0xaf, 0x8d, 0x60, 0x42, 0xe7, 0xa4,
+	0x6e, 0xd7, 0x6d, 0x1b, 0xff, 0x38, 0xa4, 0x38, 0x40, 0x3d, 0xfa, 0x9b, 0x8a, 0xd8, 0xcc, 0x0a,
+	0x70, 0xc3, 0xc2, 0xf8, 0x58, 0x9d, 0x06, 0x63, 0xd4, 0x05, 0x19, 0xae, 0x21, 0x66, 0x05, 0xbc,
+	0x69, 0xf1, 0x0e, 0xc8, 0xef, 0x10, 0xb3, 0x13, 0xfb, 0x01, 0xf5, 0x38, 0x55, 0x32, 0x8c, 0x20,
+	0xd3, 0x61, 0xca, 0x55, 0x98, 0x82, 0x90, 0x9a, 0x20, 0x4b, 0x3f, 0x37, 0xd5, 0x57, 0xc8, 0xf4,
+	0x8c, 0xab, 0x99, 0xc9, 0xf1, 0x47, 0xf4, 0x52, 0x71, 0xc6, 0x79, 0xf2, 0x70, 0xd0, 0x72, 0x5f,
+	0xe3, 0xca, 0xb3, 0xc9, 0x00, 0xb5, 0x32, 0x4d, 0x95, 0xce, 0xc2, 0xa5, 0x82, 0x84, 0x3c, 0xb5,
+	0x20, 0x72, 0xd1, 0x37, 0x05, 0x89, 0x01, 0xb8, 0x64, 0x59, 0xb8, 0xe0, 0x4b, 0x50, 0x9c, 0x3c,
+	0x73, 0x80, 0x89, 0xa6, 0x36, 0xf9, 0xf2, 0xee, 0xdf, 0xcd, 0xc5, 0xf8, 0x75, 0xf1, 0x52, 0xfe,
+	0x9e, 0xdd, 0xcd, 0xfd, 0x3f, 0x9e, 0x7e, 0xbe, 0xdc, 0xf9, 0xde, 0x76, 0xe7, 0x7b, 0xd7, 0x3b,
+	0xdf, 0xfb, 0xbf, 0xf7, 0x4b, 0xdb, 0xbd, 0x5f, 0xba, 0xda, 0xfb, 0xa5, 0x9f, 0x83, 0xc7, 0xc7,
+	0x3a, 0x4f, 0x79, 0xb6, 0xa8, 0xd9, 0x8b, 0xf9, 0x74, 0x17, 0x00, 0x00, 0xff, 0xff, 0x01, 0x3c,
+	0x37, 0xea, 0x9c, 0x02, 0x00, 0x00,
 }
 
 func (m *Partner) Marshal() (dAtA []byte, err error) {
@@ -157,6 +223,55 @@ func (m *Partner) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.EndsBefore) > 0 {
+		i -= len(m.EndsBefore)
+		copy(dAtA[i:], m.EndsBefore)
+		i = encodeVarintPartner(dAtA, i, uint64(len(m.EndsBefore)))
+		i--
+		dAtA[i] = 0x6a
+	}
+	if len(m.StartsFrom) > 0 {
+		i -= len(m.StartsFrom)
+		copy(dAtA[i:], m.StartsFrom)
+		i = encodeVarintPartner(dAtA, i, uint64(len(m.StartsFrom)))
+		i--
+		dAtA[i] = 0x62
+	}
+	if len(m.RedeemCostPerPoint) > 0 {
+		i -= len(m.RedeemCostPerPoint)
+		copy(dAtA[i:], m.RedeemCostPerPoint)
+		i = encodeVarintPartner(dAtA, i, uint64(len(m.RedeemCostPerPoint)))
+		i--
+		dAtA[i] = 0x5a
+	}
+	if len(m.EarnCostPerPoint) > 0 {
+		i -= len(m.EarnCostPerPoint)
+		copy(dAtA[i:], m.EarnCostPerPoint)
+		i = encodeVarintPartner(dAtA, i, uint64(len(m.EarnCostPerPoint)))
+		i--
+		dAtA[i] = 0x52
+	}
+	if len(m.OnHoldLiquidity) > 0 {
+		i -= len(m.OnHoldLiquidity)
+		copy(dAtA[i:], m.OnHoldLiquidity)
+		i = encodeVarintPartner(dAtA, i, uint64(len(m.OnHoldLiquidity)))
+		i--
+		dAtA[i] = 0x4a
+	}
+	if len(m.AvailableLiquidity) > 0 {
+		i -= len(m.AvailableLiquidity)
+		copy(dAtA[i:], m.AvailableLiquidity)
+		i = encodeVarintPartner(dAtA, i, uint64(len(m.AvailableLiquidity)))
+		i--
+		dAtA[i] = 0x42
+	}
+	if len(m.TotalLiquidity) > 0 {
+		i -= len(m.TotalLiquidity)
+		copy(dAtA[i:], m.TotalLiquidity)
+		i = encodeVarintPartner(dAtA, i, uint64(len(m.TotalLiquidity)))
+		i--
+		dAtA[i] = 0x3a
+	}
 	if m.Disabled {
 		i--
 		if m.Disabled {
@@ -241,6 +356,34 @@ func (m *Partner) Size() (n int) {
 	}
 	if m.Disabled {
 		n += 2
+	}
+	l = len(m.TotalLiquidity)
+	if l > 0 {
+		n += 1 + l + sovPartner(uint64(l))
+	}
+	l = len(m.AvailableLiquidity)
+	if l > 0 {
+		n += 1 + l + sovPartner(uint64(l))
+	}
+	l = len(m.OnHoldLiquidity)
+	if l > 0 {
+		n += 1 + l + sovPartner(uint64(l))
+	}
+	l = len(m.EarnCostPerPoint)
+	if l > 0 {
+		n += 1 + l + sovPartner(uint64(l))
+	}
+	l = len(m.RedeemCostPerPoint)
+	if l > 0 {
+		n += 1 + l + sovPartner(uint64(l))
+	}
+	l = len(m.StartsFrom)
+	if l > 0 {
+		n += 1 + l + sovPartner(uint64(l))
+	}
+	l = len(m.EndsBefore)
+	if l > 0 {
+		n += 1 + l + sovPartner(uint64(l))
 	}
 	return n
 }
@@ -447,6 +590,230 @@ func (m *Partner) Unmarshal(dAtA []byte) error {
 				}
 			}
 			m.Disabled = bool(v != 0)
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TotalLiquidity", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPartner
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPartner
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPartner
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.TotalLiquidity = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AvailableLiquidity", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPartner
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPartner
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPartner
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.AvailableLiquidity = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OnHoldLiquidity", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPartner
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPartner
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPartner
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.OnHoldLiquidity = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 10:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field EarnCostPerPoint", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPartner
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPartner
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPartner
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.EarnCostPerPoint = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 11:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RedeemCostPerPoint", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPartner
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPartner
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPartner
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.RedeemCostPerPoint = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 12:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StartsFrom", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPartner
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPartner
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPartner
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.StartsFrom = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 13:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field EndsBefore", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPartner
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPartner
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPartner
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.EndsBefore = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipPartner(dAtA[iNdEx:])

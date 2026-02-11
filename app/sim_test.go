@@ -32,11 +32,11 @@ import (
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/require"
 
-	"reward-chain/app"
+	"rewardchain/app"
 )
 
 const (
-	SimAppChainID = "reward-chain-simapp"
+	SimAppChainID = "rewardchain-simapp"
 )
 
 var FlagEnableStreamingValue bool

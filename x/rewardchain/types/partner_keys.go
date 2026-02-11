@@ -7,5 +7,3 @@ func PartnerKey(id uint64) []byte {
 	binary.BigEndian.PutUint64(bz, id)
 	return bz
 }
-
-

@@ -20,10 +20,10 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
-	"reward-chain/app"
+	"rewardchain/app"
 )
 
-// NewRootCmd creates a new root command for reward-chaind. It is called once in the main function.
+// NewRootCmd creates a new root command for rewardchaind. It is called once in the main function.
 func NewRootCmd() *cobra.Command {
 	var (
 		autoCliOpts        autocli.AppOptions

@@ -1,5 +1,5 @@
 {
-    "chain_name": "reward-chain",
+    "chain_name": "rewardchain",
     "coingecko": "",
     "api": [
       {
@@ -28,7 +28,7 @@
         "logo": "/logos/cosmos.svg"
       }
     ],
-    "registry_name": "reward-chain",
+    "registry_name": "rewardchain",
     "features": ["ibc-transfer", "ibc-go"],
     "bech32_prefix": "reward"
   }
