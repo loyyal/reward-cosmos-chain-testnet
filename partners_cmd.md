@@ -24,6 +24,7 @@ rewardchaind tx rewardchain create-partner "Acme Inc" "retail" "Mumbai" "IN" \
   --yes
 
   rewardchaind query rewardchain partner 
+  rewardchaind query rewardchain partner
   
   rewardchaind tx rewardchain create-partner \
   "Acme Corporation" \
@@ -33,6 +34,30 @@ rewardchaind tx rewardchain create-partner "Acme Inc" "retail" "Mumbai" "IN" \
   "0.10" \
   "0.15" \
   "1000000" \
+  --from alice \
+  --keyring-backend file \
+  --chain-id rewardchain \
+  --home ~/.rewardchain \
+  --fees 1000token \
+  --yes
+
+  rewardchaind tx rewardchain add-partner-liquidity \
+  1 \
+  "1000" \
+  "USD" \
+  "ext-wallet-123" \
+  --from alice \
+  --keyring-backend file \
+  --chain-id rewardchain \
+  --home ~/.rewardchain \
+  --fees 1000token \
+  --yes
+
+
+  rewardchaind tx rewardchain swap \
+  1 \
+  "points_to_token" \
+  "100" \
   --from alice \
   --keyring-backend file \
   --chain-id rewardchain \
@@ -54,7 +79,7 @@ rewardchaind keys list --keyring-backend os
 rewardchaind keys show validator -a --keyring-backend os
 
 # Check balance (replace with your address)
-rewardchaind query bank balances reward1abc123... --chain-id rewardchain
+rewardchaind query bank bal`ances reward1abc123... --chain-id rewardchain
 
 # Check specific token balance
 rewardchaind query bank balance reward1abc123... ureward --chain-id rewardchain

@@ -44,7 +44,36 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "CreatePartner",
 					Use:            "create-partner [name] [category] [country] [currency] [earn-cost-per-point] [burn-cost-per-point] [total-liquidity]",
 					Short:          "Send a create-partner tx",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "name"}, {ProtoField: "category"}, {ProtoField: "country"}, {ProtoField: "currency"}, {ProtoField: "earnCostPerPoint"}, {ProtoField: "burnCostPerPoint"}, {ProtoField: "totalLiquidity"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
+						{ProtoField: "name"},
+						{ProtoField: "category"},
+						{ProtoField: "country"},
+						{ProtoField: "currency"},
+						{ProtoField: "earnCostPerPoint"},
+						{ProtoField: "burnCostPerPoint"},
+						{ProtoField: "totalLiquidity"},
+					},
+				},
+				{
+					RpcMethod:      "AddPartnerLiquidity",
+					Use:            "add-partner-liquidity [partner-id] [amount] [currency] [ext-wallet]",
+					Short:          "Add external liquidity to a partner",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
+						{ProtoField: "partnerId"},
+						{ProtoField: "amount"},
+						{ProtoField: "currency"},
+						{ProtoField: "extWallet"},
+					},
+				},
+				{
+					RpcMethod:      "Swap",
+					Use:            "swap [partner-id] [route] [points]",
+					Short:          "Swap points and tokens for a partner",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
+						{ProtoField: "partnerId"},
+						{ProtoField: "route"},
+						{ProtoField: "points"},
+					},
 				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},

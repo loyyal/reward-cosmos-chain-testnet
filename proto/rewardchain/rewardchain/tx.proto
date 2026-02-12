@@ -17,8 +17,10 @@ service Msg {
   
   // UpdateParams defines a (governance) operation for updating the module
   // parameters. The authority defaults to the x/gov module account.
-  rpc UpdateParams  (MsgUpdateParams ) returns (MsgUpdateParamsResponse );
-  rpc CreatePartner (MsgCreatePartner) returns (MsgCreatePartnerResponse);
+  rpc UpdateParams        (MsgUpdateParams       ) returns (MsgUpdateParamsResponse       );
+  rpc CreatePartner       (MsgCreatePartner      ) returns (MsgCreatePartnerResponse      );
+  rpc AddPartnerLiquidity (MsgAddPartnerLiquidity) returns (MsgAddPartnerLiquidityResponse);
+  rpc Swap                (MsgSwap               ) returns (MsgSwapResponse               );
 }
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
@@ -54,3 +56,28 @@ message MsgCreatePartnerResponse {
   string id = 1;
 }
 
+// MsgAddPartnerLiquidity adds external liquidity for a partner.
+message MsgAddPartnerLiquidity {
+  option (cosmos.msg.v1.signer) = "creator";
+
+  // creator is the admin account adding liquidity.
+  string creator   = 1;
+  uint64 partnerId = 2;
+  string amount    = 3;
+  string currency  = 4;
+  string extWallet = 5;
+}
+
+message MsgAddPartnerLiquidityResponse {}
+
+// MsgSwap allows swapping between points and tokens for a partner.
+message MsgSwap {
+  option (cosmos.msg.v1.signer) = "creator";
+
+  string creator   = 1;
+  uint64 partnerId = 2;
+  string route     = 3; // "points_to_token" or "token_to_points"
+  string points    = 4;
+}
+
+message MsgSwapResponse {}

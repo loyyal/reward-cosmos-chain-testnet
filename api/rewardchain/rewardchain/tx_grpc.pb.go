@@ -19,8 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Msg_UpdateParams_FullMethodName  = "/rewardchain.rewardchain.Msg/UpdateParams"
-	Msg_CreatePartner_FullMethodName = "/rewardchain.rewardchain.Msg/CreatePartner"
+	Msg_UpdateParams_FullMethodName        = "/rewardchain.rewardchain.Msg/UpdateParams"
+	Msg_CreatePartner_FullMethodName       = "/rewardchain.rewardchain.Msg/CreatePartner"
+	Msg_AddPartnerLiquidity_FullMethodName = "/rewardchain.rewardchain.Msg/AddPartnerLiquidity"
+	Msg_Swap_FullMethodName                = "/rewardchain.rewardchain.Msg/Swap"
 )
 
 // MsgClient is the client API for Msg service.
@@ -31,6 +33,8 @@ type MsgClient interface {
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
 	CreatePartner(ctx context.Context, in *MsgCreatePartner, opts ...grpc.CallOption) (*MsgCreatePartnerResponse, error)
+	AddPartnerLiquidity(ctx context.Context, in *MsgAddPartnerLiquidity, opts ...grpc.CallOption) (*MsgAddPartnerLiquidityResponse, error)
+	Swap(ctx context.Context, in *MsgSwap, opts ...grpc.CallOption) (*MsgSwapResponse, error)
 }
 
 type msgClient struct {
@@ -59,6 +63,24 @@ func (c *msgClient) CreatePartner(ctx context.Context, in *MsgCreatePartner, opt
 	return out, nil
 }
 
+func (c *msgClient) AddPartnerLiquidity(ctx context.Context, in *MsgAddPartnerLiquidity, opts ...grpc.CallOption) (*MsgAddPartnerLiquidityResponse, error) {
+	out := new(MsgAddPartnerLiquidityResponse)
+	err := c.cc.Invoke(ctx, Msg_AddPartnerLiquidity_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) Swap(ctx context.Context, in *MsgSwap, opts ...grpc.CallOption) (*MsgSwapResponse, error) {
+	out := new(MsgSwapResponse)
+	err := c.cc.Invoke(ctx, Msg_Swap_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -67,6 +89,8 @@ type MsgServer interface {
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
 	CreatePartner(context.Context, *MsgCreatePartner) (*MsgCreatePartnerResponse, error)
+	AddPartnerLiquidity(context.Context, *MsgAddPartnerLiquidity) (*MsgAddPartnerLiquidityResponse, error)
+	Swap(context.Context, *MsgSwap) (*MsgSwapResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -79,6 +103,12 @@ func (UnimplementedMsgServer) UpdateParams(context.Context, *MsgUpdateParams) (*
 }
 func (UnimplementedMsgServer) CreatePartner(context.Context, *MsgCreatePartner) (*MsgCreatePartnerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePartner not implemented")
+}
+func (UnimplementedMsgServer) AddPartnerLiquidity(context.Context, *MsgAddPartnerLiquidity) (*MsgAddPartnerLiquidityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddPartnerLiquidity not implemented")
+}
+func (UnimplementedMsgServer) Swap(context.Context, *MsgSwap) (*MsgSwapResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Swap not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -129,6 +159,42 @@ func _Msg_CreatePartner_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_AddPartnerLiquidity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgAddPartnerLiquidity)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).AddPartnerLiquidity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_AddPartnerLiquidity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).AddPartnerLiquidity(ctx, req.(*MsgAddPartnerLiquidity))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_Swap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSwap)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).Swap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_Swap_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).Swap(ctx, req.(*MsgSwap))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -143,6 +209,14 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreatePartner",
 			Handler:    _Msg_CreatePartner_Handler,
+		},
+		{
+			MethodName: "AddPartnerLiquidity",
+			Handler:    _Msg_AddPartnerLiquidity_Handler,
+		},
+		{
+			MethodName: "Swap",
+			Handler:    _Msg_Swap_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
