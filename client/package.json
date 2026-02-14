@@ -1,0 +1,25 @@
+{
+  "name": "reward-chain-client",
+  "version": "1.0.0",
+  "description": "Node.js client for Reward Chain Cosmos SDK",
+  "type": "module",
+  "main": "client.js",
+  "scripts": {
+    "start": "node example.js"
+  },
+  "dependencies": {
+    "@cosmjs/stargate": "^0.32.2",
+    "@cosmjs/proto-signing": "^0.32.2",
+    "@cosmjs/crypto": "^0.32.2",
+    "@cosmjs/encoding": "^0.32.2",
+    "@cosmjs/tendermint-rpc": "^0.32.2",
+    "protobufjs": "^7.2.5"
+  },
+  "keywords": [
+    "cosmos",
+    "blockchain",
+    "reward-chain"
+  ],
+  "author": "",
+  "license": "ISC"
+}
