@@ -7,6 +7,8 @@ A clean and slim Node.js client for interacting with the Reward Chain Cosmos SDK
 - ✅ Create partners on-chain
 - ✅ List all partners
 - ✅ Get partner by ID
+- ✅ Add liquidity to partners
+- ✅ Swap between points and tokens
 - ✅ Clean and minimal API
 - ✅ Uses generated proto files
 
@@ -64,6 +66,23 @@ console.log("Partners:", partners);
 // Get a specific partner
 const partner = await client.getPartner(1);
 console.log("Partner:", partner);
+
+// Add liquidity to a partner
+const liquidityResult = await client.addPartnerLiquidity({
+  partnerId: 1,
+  amount: "1000",
+  currency: "USD",
+  extWallet: "0x1234567890123456789012345678901234567890",
+});
+console.log("Liquidity added:", liquidityResult.transactionHash);
+
+// Swap points to tokens
+const swapResult = await client.swap({
+  partnerId: 1,
+  route: "points_to_token", // or "token_to_points"
+  points: "100",
+});
+console.log("Swap completed:", swapResult.transactionHash);
 
 // Disconnect
 await client.disconnect();
@@ -134,6 +153,39 @@ Gets a specific partner by ID.
 - `partnerId` (number): Partner ID
 
 **Returns:** `Promise<Object>` partner data
+
+### `client.addPartnerLiquidity(liquidityData, options)`
+
+Adds liquidity for a partner.
+
+**Parameters:**
+- `liquidityData` (object):
+  - `partnerId` (number): Partner ID
+  - `amount` (string): Amount to add
+  - `currency` (string): Currency
+  - `extWallet` (string): External wallet address
+- `options` (object, optional):
+  - `memo` (string): Transaction memo
+  - `fee` (string|Object): Transaction fee (default: calculated)
+  - `gas` (number): Gas limit (default: 200000)
+
+**Returns:** `Promise<Object>` with `transactionHash`, `height`, and `gasUsed`
+
+### `client.swap(swapData, options)`
+
+Swaps between points and tokens for a partner.
+
+**Parameters:**
+- `swapData` (object):
+  - `partnerId` (number): Partner ID
+  - `route` (string): Swap route - must be `"points_to_token"` or `"token_to_points"`
+  - `points` (string): Points amount
+- `options` (object, optional):
+  - `memo` (string): Transaction memo
+  - `fee` (string|Object): Transaction fee (default: calculated)
+  - `gas` (number): Gas limit (default: 200000)
+
+**Returns:** `Promise<Object>` with `transactionHash`, `height`, and `gasUsed`
 
 ## Notes
 

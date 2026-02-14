@@ -119,6 +119,162 @@ async function createRewardChainRegistry() {
   };
   
   registry.register("/rewardchain.rewardchain.MsgCreatePartner", MsgCreatePartnerType);
+
+  // Define MsgAddPartnerLiquidity message type
+  class MsgAddPartnerLiquidity {
+    constructor(properties = {}) {
+      this.creator = properties.creator || "";
+      this.partnerId = properties.partnerId || 0;
+      this.amount = properties.amount || "";
+      this.currency = properties.currency || "";
+      this.extWallet = properties.extWallet || "";
+    }
+  }
+
+  const MsgAddPartnerLiquidityType = {
+    create: (properties) => new MsgAddPartnerLiquidity(properties),
+    encode: (message) => {
+      const writer = protobuf.Writer.create();
+      if (message.creator !== undefined && message.creator !== "") {
+        writer.uint32(10).string(message.creator);
+      }
+      if (message.partnerId !== undefined && message.partnerId !== 0) {
+        writer.uint32(16).uint64(Number(message.partnerId));
+      }
+      if (message.amount !== undefined && message.amount !== "") {
+        writer.uint32(26).string(message.amount);
+      }
+      if (message.currency !== undefined && message.currency !== "") {
+        writer.uint32(34).string(message.currency);
+      }
+      if (message.extWallet !== undefined && message.extWallet !== "") {
+        writer.uint32(42).string(message.extWallet);
+      }
+      return writer;
+    },
+    decode: (input) => {
+      const reader = protobuf.Reader.create(input);
+      const message = {};
+      const end = reader.len;
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1:
+            message.creator = reader.string();
+            break;
+          case 2:
+            message.partnerId = reader.uint64();
+            break;
+          case 3:
+            message.amount = reader.string();
+            break;
+          case 4:
+            message.currency = reader.string();
+            break;
+          case 5:
+            message.extWallet = reader.string();
+            break;
+          default:
+            reader.skipType(tag & 7);
+            break;
+        }
+      }
+      return message;
+    },
+    fromJSON: (object) => {
+      return {
+        creator: object.creator || "",
+        partnerId: object.partnerId || 0,
+        amount: object.amount || "",
+        currency: object.currency || "",
+        extWallet: object.extWallet || "",
+      };
+    },
+    toJSON: (message) => {
+      const obj = {};
+      message.creator !== undefined && (obj.creator = message.creator);
+      message.partnerId !== undefined && (obj.partnerId = message.partnerId);
+      message.amount !== undefined && (obj.amount = message.amount);
+      message.currency !== undefined && (obj.currency = message.currency);
+      message.extWallet !== undefined && (obj.extWallet = message.extWallet);
+      return obj;
+    },
+  };
+
+  // Define MsgSwap message type
+  class MsgSwap {
+    constructor(properties = {}) {
+      this.creator = properties.creator || "";
+      this.partnerId = properties.partnerId || 0;
+      this.route = properties.route || "";
+      this.points = properties.points || "";
+    }
+  }
+
+  const MsgSwapType = {
+    create: (properties) => new MsgSwap(properties),
+    encode: (message) => {
+      const writer = protobuf.Writer.create();
+      if (message.creator !== undefined && message.creator !== "") {
+        writer.uint32(10).string(message.creator);
+      }
+      if (message.partnerId !== undefined && message.partnerId !== 0) {
+        writer.uint32(16).uint64(Number(message.partnerId));
+      }
+      if (message.route !== undefined && message.route !== "") {
+        writer.uint32(26).string(message.route);
+      }
+      if (message.points !== undefined && message.points !== "") {
+        writer.uint32(34).string(message.points);
+      }
+      return writer;
+    },
+    decode: (input) => {
+      const reader = protobuf.Reader.create(input);
+      const message = {};
+      const end = reader.len;
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1:
+            message.creator = reader.string();
+            break;
+          case 2:
+            message.partnerId = reader.uint64();
+            break;
+          case 3:
+            message.route = reader.string();
+            break;
+          case 4:
+            message.points = reader.string();
+            break;
+          default:
+            reader.skipType(tag & 7);
+            break;
+        }
+      }
+      return message;
+    },
+    fromJSON: (object) => {
+      return {
+        creator: object.creator || "",
+        partnerId: object.partnerId || 0,
+        route: object.route || "",
+        points: object.points || "",
+      };
+    },
+    toJSON: (message) => {
+      const obj = {};
+      message.creator !== undefined && (obj.creator = message.creator);
+      message.partnerId !== undefined && (obj.partnerId = message.partnerId);
+      message.route !== undefined && (obj.route = message.route);
+      message.points !== undefined && (obj.points = message.points);
+      return obj;
+    },
+  };
+
+  registry.register("/rewardchain.rewardchain.MsgAddPartnerLiquidity", MsgAddPartnerLiquidityType);
+  registry.register("/rewardchain.rewardchain.MsgSwap", MsgSwapType);
   
   return registry;
 }
@@ -295,6 +451,118 @@ export class RewardChainClient {
     } catch (error) {
       throw new Error(`Failed to query partner: ${error.message}`);
     }
+  }
+
+  /**
+   * Add liquidity for a partner
+   * @param {Object} liquidityData - Liquidity data
+   * @param {number} liquidityData.partnerId - Partner ID
+   * @param {string} liquidityData.amount - Amount to add
+   * @param {string} liquidityData.currency - Currency
+   * @param {string} liquidityData.extWallet - External wallet address
+   * @param {Object} options - Transaction options
+   * @param {string} options.memo - Transaction memo
+   * @param {string|Object} options.fee - Transaction fee (default: calculated)
+   * @param {number} options.gas - Gas limit (default: 200000)
+   * @returns {Promise<Object>} Transaction result
+   */
+  async addPartnerLiquidity(liquidityData, options = {}) {
+    const {
+      partnerId,
+      amount,
+      currency,
+      extWallet,
+    } = liquidityData;
+
+    const msg = {
+      typeUrl: "/rewardchain.rewardchain.MsgAddPartnerLiquidity",
+      value: {
+        creator: this.address,
+        partnerId: partnerId,
+        amount: amount,
+        currency: currency,
+        extWallet: extWallet,
+      },
+    };
+
+    // Use provided fee or calculate from gas price
+    let fee = options.fee;
+    if (!fee || fee === "auto") {
+      const gasLimit = options.gas || 200000;
+      fee = calculateFee(gasLimit, this.gasPrice);
+    }
+    
+    const memo = options.memo || "";
+
+    const result = await this.client.signAndBroadcast(
+      this.address,
+      [msg],
+      fee,
+      memo
+    );
+
+    return {
+      transactionHash: result.transactionHash,
+      height: result.height,
+      gasUsed: result.gasUsed,
+    };
+  }
+
+  /**
+   * Swap between points and tokens for a partner
+   * @param {Object} swapData - Swap data
+   * @param {number} swapData.partnerId - Partner ID
+   * @param {string} swapData.route - Swap route: "points_to_token" or "token_to_points"
+   * @param {string} swapData.points - Points amount
+   * @param {Object} options - Transaction options
+   * @param {string} options.memo - Transaction memo
+   * @param {string|Object} options.fee - Transaction fee (default: calculated)
+   * @param {number} options.gas - Gas limit (default: 200000)
+   * @returns {Promise<Object>} Transaction result
+   */
+  async swap(swapData, options = {}) {
+    const {
+      partnerId,
+      route,
+      points,
+    } = swapData;
+
+    // Validate route
+    if (route !== "points_to_token" && route !== "token_to_points") {
+      throw new Error('Route must be either "points_to_token" or "token_to_points"');
+    }
+
+    const msg = {
+      typeUrl: "/rewardchain.rewardchain.MsgSwap",
+      value: {
+        creator: this.address,
+        partnerId: partnerId,
+        route: route,
+        points: points,
+      },
+    };
+
+    // Use provided fee or calculate from gas price
+    let fee = options.fee;
+    if (!fee || fee === "auto") {
+      const gasLimit = options.gas || 200000;
+      fee = calculateFee(gasLimit, this.gasPrice);
+    }
+    
+    const memo = options.memo || "";
+
+    const result = await this.client.signAndBroadcast(
+      this.address,
+      [msg],
+      fee,
+      memo
+    );
+
+    return {
+      transactionHash: result.transactionHash,
+      height: result.height,
+      gasUsed: result.gasUsed,
+    };
   }
 
   /**

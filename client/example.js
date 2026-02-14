@@ -70,6 +70,34 @@ async function main() {
       console.log(`\nFetching partner with ID ${partnerId}...`);
       const partner = await client.getPartner(partnerId);
       console.log("Partner details:", JSON.stringify(partner, null, 2));
+
+      // Example 4: Add liquidity to a partner
+      console.log(`\nAdding liquidity to partner ${partnerId}...`);
+      const liquidityResult = await client.addPartnerLiquidity({
+        partnerId: partnerId,
+        amount: "1000",
+        currency: "USD",
+        extWallet: "0x1234567890123456789012345678901234567890",
+      });
+      console.log("Liquidity added successfully!");
+      console.log("Transaction Hash:", liquidityResult.transactionHash);
+      console.log("Height:", liquidityResult.height);
+      console.log("Gas Used:", liquidityResult.gasUsed);
+
+      // Wait a bit for the transaction to be indexed
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      // Example 5: Swap points to tokens
+      console.log(`\nSwapping points to tokens for partner ${partnerId}...`);
+      const swapResult = await client.swap({
+        partnerId: partnerId,
+        route: "points_to_token",
+        points: "100",
+      });
+      console.log("Swap completed successfully!");
+      console.log("Transaction Hash:", swapResult.transactionHash);
+      console.log("Height:", swapResult.height);
+      console.log("Gas Used:", swapResult.gasUsed);
     }
 
     // Disconnect
