@@ -131,11 +131,16 @@ rewardchaind version
 ```bash
 # Set variables
 export CHAIN_ID="rewardchain-1"  # Change to your chain ID
-export MONIKER="your-validator-name"  # Your validator name
-export HOME="$HOME/.rewardchain"
+export MONIKER="validator-1"  # Your validator name
+export REWARDCHAIN_HOME="$HOME/.rewardchain"
+
+# DANGER: wipes the node’s local data & config
+sudo rm -rf "$REWARDCHAIN_HOME"
+
+mkdir -p "$REWARDCHAIN_HOME"
 
 # Initialize the node
-rewardchaind init "$MONIKER" --chain-id "$CHAIN_ID" --home "$HOME"
+rewardchaind init "$MONIKER" --chain-id "$CHAIN_ID" --home "$REWARDCHAIN_HOME"
 ```
 
 ### 2. Create or Import Validator Key
@@ -144,7 +149,7 @@ rewardchaind init "$MONIKER" --chain-id "$CHAIN_ID" --home "$HOME"
 
 ```bash
 rewardchaind keys add validator \
-  --home "$HOME" \
+  --home "$REWARDCHAIN_HOME" \
   --keyring-backend file
 ```
 
@@ -155,14 +160,14 @@ rewardchaind keys add validator \
 ```bash
 rewardchaind keys add validator \
   --recover \
-  --home "$HOME" \
+  --home "$REWARDCHAIN_HOME" \
   --keyring-backend file
 ```
 
 **Get your validator address:**
 
 ```bash
-VAL_ADDR=$(rewardchaind keys show validator -a --home "$HOME" --keyring-backend file)
+VAL_ADDR=$(rewardchaind keys show validator -a --home "$REWARDCHAIN_HOME" --keyring-backend file)
 echo "Validator address: $VAL_ADDR"
 ```
 
@@ -172,19 +177,27 @@ If you're starting a new chain:
 
 ```bash
 # Add genesis account
-rewardchaind genesis add-genesis-account "$VAL_ADDR" 1000000000stake --home "$HOME"
+rewardchaind genesis add-genesis-account validator 1000000000stake --home "$REWARDCHAIN_HOME" --keyring-backend file
 
 # Create validator gentx
-rewardchaind genesis gentx validator 1000000stake \
+# rewardchaind genesis gentx validator 1000000stake --chain-id "$CHAIN_ID" --home "$REWARDCHAIN_HOME" --keyring-backend file
+
+# Create gentx
+rewardchaind genesis gentx validator 50000000000stake \
   --chain-id "$CHAIN_ID" \
-  --home "$HOME" \
-  --keyring-backend file
+  --moniker $MONIKER \
+  --commission-rate 0.1 \
+  --commission-max-rate 0.2 \
+  --commission-max-change-rate 0.01 \
+  --min-self-delegation 1 \
+  --keyring-backend file \
+  --home "$REWARDCHAIN_HOME"
 
 # Collect gentxs
-rewardchaind genesis collect-gentxs --home "$HOME"
+rewardchaind genesis collect-gentxs --home "$REWARDCHAIN_HOME"
 
 # Validate genesis
-rewardchaind genesis validate-genesis --home "$HOME"
+rewardchaind genesis validate-genesis --home "$REWARDCHAIN_HOME"
 ```
 
 ### 4. Configure Genesis (For Existing Chain)
@@ -212,62 +225,67 @@ nano "$HOME/config/config.toml"
 
 **Key settings to configure:**
 
-```toml
-# P2P Configuration
-moniker = "your-validator-name"
-external_address = "YOUR_SERVER_IP:26656"  # Your server's public IP
-
-# Seed nodes (if joining existing network)
-seeds = "seed-node-1@ip:port,seed-node-2@ip:port"
-
-# Persistent peers
-persistent_peers = "peer-1@ip:port,peer-2@ip:port"
-
-# RPC Configuration
-laddr = "tcp://0.0.0.0:26657"  # Allow external RPC access (or use 127.0.0.1 for local only)
-
-# Enable Prometheus metrics
-prometheus = true
-prometheus_listen_addr = ":26660"
-```
-
-### 2. Configure `app.toml`
-
-Edit the application configuration:
-
 ```bash
-nano "$HOME/config/app.toml"
+# Set moniker
+sed -i 's/^moniker = .*/moniker = "validator-1"/' "$REWARDCHAIN_HOME/config/config.toml"
+
+# Set external address (replace YOUR_SERVER_IP with actual IP)
+sed -i 's/^external_address = .*/external_address = "157.175.215.244:26656"/' "$REWARDCHAIN_HOME/config/config.toml"
+
+# Set seeds
+# sed -i 's/^seeds = .*/seeds = "seed-node-1@ip:port,seed-node-2@ip:port"/' "$REWARDCHAIN_HOME/config/config.toml"
+
+# Set persistent peers
+# sed -i 's/^persistent_peers = .*/persistent_peers = "peer-1@ip:port,peer-2@ip:port"/' "$REWARDCHAIN_HOME/config/config.toml"
+
+# Set RPC laddr to allow external access
+sed -i 's/^laddr = "tcp:\/\/127.0.0.1:26657"/laddr = "tcp:\/\/0.0.0.0:26657"/' "$REWARDCHAIN_HOME/config/config.toml"
+
+# Enable Prometheus
+sed -i 's/^prometheus = .*/prometheus = true/' "$REWARDCHAIN_HOME/config/config.toml"
+
+# Set Prometheus listen address
+sed -i 's/^prometheus_listen_addr = .*/prometheus_listen_addr = ":26660"/' "$REWARDCHAIN_HOME/config/config.toml"
 ```
 
 **Key settings to configure:**
 
-```toml
-# Minimum gas prices (required)
-minimum-gas-prices = "0.0001stake"  # Adjust based on your token economics
+```bash
+# Set minimum gas prices
+sed -i 's/^minimum-gas-prices = .*/minimum-gas-prices = "0.0001stake"/' "$REWARDCHAIN_HOME/config/app.toml"
 
-# API Configuration
-api {
-  enable = true
-  address = "tcp://0.0.0.0:1317"  # Or 127.0.0.1:1317 for local only
-  swagger = true
-}
+# Enable API
+sed -i '/\[api\]/,/\[/ s/^enable = .*/enable = true/' "$REWARDCHAIN_HOME/config/app.toml"
 
-# gRPC Configuration
-grpc {
-  address = "0.0.0.0:9090"  # Or 127.0.0.1:9090 for local only
-}
+# Set API address
+sed -i '/\[api\]/,/\[/ s/^address = .*/address = "tcp:\/\/0.0.0.0:1317"/' "$REWARDCHAIN_HOME/config/app.toml"
 
-# State Sync (optional, for faster syncing)
-[state-sync]
-snapshot-interval = 1000
-snapshot-keep-recent = 2
+# Enable Swagger
+sed -i '/\[api\]/,/\[/ s/^swagger = .*/swagger = true/' "$REWARDCHAIN_HOME/config/app.toml"
 
-# Pruning (for disk space management)
-pruning = "default"  # Options: "default", "nothing", "everything", "custom"
-pruning-interval = "10"
-pruning-keep-recent = "100"
-pruning-keep-every = "0"
-pruning-min-retain-blocks = "0"
+# Set gRPC address
+sed -i '/\[grpc\]/,/\[/ s/^address = .*/address = "0.0.0.0:9090"/' "$REWARDCHAIN_HOME/config/app.toml"
+
+# Set state-sync snapshot interval
+sed -i 's/^snapshot-interval = .*/snapshot-interval = 1000/' "$REWARDCHAIN_HOME/config/app.toml"
+
+# Set snapshot keep recent
+sed -i 's/^snapshot-keep-recent = .*/snapshot-keep-recent = 2/' "$REWARDCHAIN_HOME/config/app.toml"
+
+# Set pruning strategy
+sed -i 's/^pruning = .*/pruning = "default"/' "$REWARDCHAIN_HOME/config/app.toml"
+
+# Set pruning interval
+sed -i 's/^pruning-interval = .*/pruning-interval = "10"/' "$REWARDCHAIN_HOME/config/app.toml"
+
+# Set pruning keep recent
+sed -i 's/^pruning-keep-recent = .*/pruning-keep-recent = "100"/' "$REWARDCHAIN_HOME/config/app.toml"
+
+# Set pruning keep every
+sed -i 's/^pruning-keep-every = .*/pruning-keep-every = "0"/' "$REWARDCHAIN_HOME/config/app.toml"
+
+# Set pruning min retain blocks
+sed -i 's/^min-retain-blocks = .*/min-retain-blocks = "0"/' "$REWARDCHAIN_HOME/config/app.toml"
 ```
 
 ### 3. Set Keyring Backend
@@ -277,7 +295,7 @@ For production, use file-based keyring (more secure than OS keyring on servers):
 ```bash
 # The keyring backend is already set to "file" in the commands above
 # Verify keyring location
-ls -la "$HOME/.rewardchain/keyring-file/"
+ls -la "$REWARDCHAIN_HOME/keyring-file/"
 ```
 
 ## Systemd Service Setup
